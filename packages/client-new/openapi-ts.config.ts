@@ -9,7 +9,16 @@ export default defineConfig({
   },
   plugins: [
     '@hey-api/typescript',
-    '@hey-api/sdk',
+    {
+      name: '@hey-api/transformers',
+      // dates: true would convert date-time strings to Date objects
+      // but we have unix timestamps (numbers), so we'll handle them in post-processing
+      // bigint: false (default) - natively type BigInts as bigint (what we want!)
+    },
+    {
+      name: '@hey-api/sdk',
+      transformer: true, // Enable transformers in SDK methods
+    },
     '@hey-api/client-fetch',
   ],
 });

@@ -155,8 +155,102 @@ function transformTypes(content: string): string {
   return transformed;
 }
 
+/**
+ * Transform generated transformers.gen.ts to convert unix timestamps to Date
+ *
+ * @hey-api/transformers converts timestamp fields to BigInt by default.
+ * We need to replace BigInt(timestamp) with new Date(timestamp * 1000) for unix timestamps.
+ */
+function transformTransformers(content: string): string {
+  let transformed = content;
+  let replacementCount = 0;
+
+  // Unix timestamp fields that should be Date objects instead of BigInt
+  const timestampFields = [
+    'timestamp',
+    'created_at',
+    'updated_at',
+    'last_activity',
+    'expires_at',
+    'valid_until',
+    'start_from',
+    'cycle_start',
+    'cycle_end',
+  ];
+
+  // Replace BigInt conversions with Date conversions for timestamp fields
+  // Pattern: data.timestamp = BigInt(data.timestamp.toString());
+  // Replace with: data.timestamp = new Date(Number(data.timestamp) * 1000);
+
+  for (const field of timestampFields) {
+    // Match patterns like: data.timestamp = BigInt(data.timestamp.toString());
+    const bigintPattern = new RegExp(
+      `(\\s+)(data\\.${field} = )BigInt\\(data\\.${field}\\.toString\\(\\)\\);`,
+      'g'
+    );
+
+    const matches = transformed.match(bigintPattern);
+    if (matches) {
+      transformed = transformed.replace(
+        bigintPattern,
+        `$1$2new Date(Number(data.${field}) * 1000);`
+      );
+      replacementCount += matches.length;
+    }
+  }
+
+  if (replacementCount > 0) {
+    console.log(`✓ Replaced ${replacementCount} unix timestamp BigInt → Date conversions`);
+  }
+
+  return transformed;
+}
+
+/**
+ * Transform types.gen.ts to change timestamp field types from bigint to Date
+ */
+function transformTimestampTypes(content: string): string {
+  let transformed = content;
+  let replacementCount = 0;
+
+  // Change timestamp types from bigint to Date
+  const timestampFields = [
+    'timestamp',
+    'created_at',
+    'updated_at',
+    'last_activity',
+    'expires_at',
+    'valid_until',
+    'start_from',
+    'cycle_start',
+    'cycle_end',
+  ];
+
+  for (const field of timestampFields) {
+    // Pattern: timestamp: bigint; or timestamp?: bigint;
+    const pattern = new RegExp(
+      `(\\s+${field}\\??: )bigint(;)`,
+      'g'
+    );
+
+    const matches = transformed.match(pattern);
+    if (matches) {
+      transformed = transformed.replace(pattern, '$1Date$2');
+      replacementCount += matches.length;
+    }
+  }
+
+  if (replacementCount > 0) {
+    console.log(`✓ Changed ${replacementCount} timestamp types: bigint → Date`);
+  }
+
+  return transformed;
+}
+
 async function main() {
   console.log('🔧 Post-processing generated types...\n');
+
+  const TRANSFORMERS_FILE = path.join(ROOT_DIR, 'src', 'generated', 'transformers.gen.ts');
 
   // Check if files exist
   if (!fs.existsSync(API_SPEC_PATH)) {
@@ -178,14 +272,26 @@ async function main() {
 
   // Transform types
   console.log('\nTransforming types.gen.ts...');
-  const originalContent = fs.readFileSync(TYPES_FILE, 'utf-8');
-  const transformedContent = transformTypes(originalContent);
+  let typesContent = fs.readFileSync(TYPES_FILE, 'utf-8');
+  typesContent = transformTypes(typesContent);
+  typesContent = transformTimestampTypes(typesContent);
+  fs.writeFileSync(TYPES_FILE, typesContent, 'utf-8');
 
-  // Save the modified file
-  fs.writeFileSync(TYPES_FILE, transformedContent, 'utf-8');
+  // Transform transformers (add Date conversions)
+  if (fs.existsSync(TRANSFORMERS_FILE)) {
+    console.log('\nTransforming transformers.gen.ts...');
+    const originalTransformersContent = fs.readFileSync(TRANSFORMERS_FILE, 'utf-8');
+    const transformedTransformersContent = transformTransformers(originalTransformersContent);
+    fs.writeFileSync(TRANSFORMERS_FILE, transformedTransformersContent, 'utf-8');
+  } else {
+    console.log('\n⚠️  transformers.gen.ts not found, skipping timestamp conversions');
+  }
 
   console.log('\n✅ Post-processing complete!');
   console.log(`   Modified: ${TYPES_FILE}`);
+  if (fs.existsSync(TRANSFORMERS_FILE)) {
+    console.log(`   Modified: ${TRANSFORMERS_FILE}`);
+  }
 }
 
 main().catch((error) => {

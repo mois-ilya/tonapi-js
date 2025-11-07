@@ -21,9 +21,9 @@ export type AccountAddress = {
 };
 
 export type BlockCurrencyCollection = {
-    grams: number;
+    grams: bigint;
     other: Array<{
-        id: number;
+        id: bigint;
         value: string;
     }>;
 };
@@ -53,7 +53,7 @@ export type ReducedBlock = {
     seqno: number;
     master_ref?: string;
     tx_quantity: number;
-    utime: number;
+    utime: bigint;
     shards_blocks: Array<string>;
     parent: Array<string>;
 };
@@ -74,19 +74,19 @@ export type BlockchainBlock = {
     want_split: boolean;
     want_merge: boolean;
     key_block: boolean;
-    gen_utime: number;
-    start_lt: number;
-    end_lt: number;
+    gen_utime: bigint;
+    start_lt: bigint;
+    end_lt: bigint;
     vert_seqno: number;
     gen_catchain_seqno: number;
     min_ref_mc_seqno: number;
     prev_key_block_seqno: number;
     gen_software_version?: number;
-    gen_software_capabilities?: number;
+    gen_software_capabilities?: bigint;
     master_ref?: string;
     prev_refs: Array<string>;
-    in_msg_descr_length: number;
-    out_msg_descr_length: number;
+    in_msg_descr_length: bigint;
+    out_msg_descr_length: bigint;
     rand_seed: string;
     created_by: string;
 };
@@ -115,18 +115,18 @@ export type StateInit = {
 
 export type Message = {
     msg_type: 'int_msg' | 'ext_in_msg' | 'ext_out_msg';
-    created_lt: number;
+    created_lt: bigint;
     ihr_disabled: boolean;
     bounce: boolean;
     bounced: boolean;
-    value: number;
+    value: bigint;
     value_extra?: Array<ExtraCurrency>;
-    fwd_fee: number;
-    ihr_fee: number;
+    fwd_fee: bigint;
+    ihr_fee: bigint;
     destination?: AccountAddress;
     source?: AccountAddress;
-    import_fee: number;
-    created_at: number;
+    import_fee: bigint;
+    created_at: Date;
     op_code?: string;
     init?: StateInit;
     hash: string;
@@ -157,22 +157,22 @@ export type ComputePhase = {
     skipped: boolean;
     skip_reason?: ComputeSkipReason;
     success?: boolean;
-    gas_fees?: number;
-    gas_used?: number;
+    gas_fees?: bigint;
+    gas_used?: bigint;
     vm_steps?: number;
     exit_code?: number;
     exit_code_description?: string;
 };
 
 export type StoragePhase = {
-    fees_collected: number;
-    fees_due?: number;
+    fees_collected: bigint;
+    fees_due?: bigint;
     status_change: AccStatusChange;
 };
 
 export type CreditPhase = {
-    fees_collected: number;
-    credit: number;
+    fees_collected: bigint;
+    credit: bigint;
 };
 
 export type ActionPhase = {
@@ -180,21 +180,21 @@ export type ActionPhase = {
     result_code: number;
     total_actions: number;
     skipped_actions: number;
-    fwd_fees: number;
-    total_fees: number;
+    fwd_fees: bigint;
+    total_fees: bigint;
     result_code_description?: string;
 };
 
 export type Transaction = {
     hash: string;
-    lt: number;
+    lt: bigint;
     account: AccountAddress;
     success: boolean;
-    utime: number;
+    utime: bigint;
     orig_status: AccountStatus;
     end_status: AccountStatus;
-    total_fees: number;
-    end_balance: number;
+    total_fees: bigint;
+    end_balance: bigint;
     transaction_type: TransactionType;
     state_update_old: string;
     state_update_new: string;
@@ -202,7 +202,7 @@ export type Transaction = {
     out_msgs: Array<Message>;
     block: string;
     prev_trans_hash?: string;
-    prev_trans_lt?: number;
+    prev_trans_lt?: bigint;
     compute_phase?: ComputePhase;
     storage_phase?: StoragePhase;
     credit_phase?: CreditPhase;
@@ -225,28 +225,28 @@ export type ConfigProposalSetup = {
     max_tot_rounds: number;
     min_wins: number;
     max_losses: number;
-    min_store_sec: number;
-    max_store_sec: number;
-    bit_price: number;
-    cell_price: number;
+    min_store_sec: bigint;
+    max_store_sec: bigint;
+    bit_price: bigint;
+    cell_price: bigint;
 };
 
 export type GasLimitPrices = {
-    special_gas_limit?: number;
-    flat_gas_limit?: number;
-    flat_gas_price?: number;
-    gas_price: number;
-    gas_limit: number;
-    gas_credit: number;
-    block_gas_limit: number;
-    freeze_due_limit: number;
-    delete_due_limit: number;
+    special_gas_limit?: bigint;
+    flat_gas_limit?: bigint;
+    flat_gas_price?: bigint;
+    gas_price: bigint;
+    gas_limit: bigint;
+    gas_credit: bigint;
+    block_gas_limit: bigint;
+    freeze_due_limit: bigint;
+    delete_due_limit: bigint;
 };
 
 export type BlockParamLimits = {
-    underload: number;
-    soft_limit: number;
-    hard_limit: number;
+    underload: bigint;
+    soft_limit: bigint;
+    hard_limit: bigint;
 };
 
 export type BlockLimits = {
@@ -256,17 +256,17 @@ export type BlockLimits = {
 };
 
 export type MsgForwardPrices = {
-    lump_price: number;
-    bit_price: number;
-    cell_price: number;
-    ihr_price_factor: number;
-    first_frac: number;
-    next_frac: number;
+    lump_price: bigint;
+    bit_price: bigint;
+    cell_price: bigint;
+    ihr_price_factor: bigint;
+    first_frac: bigint;
+    next_frac: bigint;
 };
 
 export type WorkchainDescr = {
     workchain: number;
-    enabled_since: number;
+    enabled_since: bigint;
     actual_min_split: number;
     min_split: number;
     max_split: number;
@@ -276,12 +276,12 @@ export type WorkchainDescr = {
     flags: number;
     zerostate_root_hash: string;
     zerostate_file_hash: string;
-    version: number;
+    version: bigint;
 };
 
 export type MisbehaviourPunishmentConfig = {
-    default_flat_fine: number;
-    default_proportional_fine: number;
+    default_flat_fine: bigint;
+    default_proportional_fine: bigint;
     severity_flat_mult: number;
     severity_proportional_mult: number;
     unpunishable_interval: number;
@@ -294,14 +294,14 @@ export type MisbehaviourPunishmentConfig = {
 };
 
 export type SizeLimitsConfig = {
-    max_msg_bits: number;
-    max_msg_cells: number;
-    max_library_cells: number;
+    max_msg_bits: bigint;
+    max_msg_cells: bigint;
+    max_library_cells: bigint;
     max_vm_data_depth: number;
-    max_ext_msg_size: number;
+    max_ext_msg_size: bigint;
     max_ext_msg_depth: number;
-    max_acc_state_cells?: number;
-    max_acc_state_bits?: number;
+    max_acc_state_cells?: bigint;
+    max_acc_state_bits?: bigint;
 };
 
 export type ValidatorsSet = {
@@ -312,7 +312,7 @@ export type ValidatorsSet = {
     total_weight?: string;
     list: Array<{
         public_key: string;
-        weight: number;
+        weight: bigint;
         adnl_addr?: string;
     }>;
 };
@@ -330,19 +330,19 @@ export type OracleBridgeParams = {
 };
 
 export type JettonBridgePrices = {
-    bridge_burn_fee: number;
-    bridge_mint_fee: number;
-    wallet_min_tons_for_storage: number;
-    wallet_gas_consumption: number;
-    minter_min_tons_for_storage: number;
-    discover_gas_consumption: number;
+    bridge_burn_fee: bigint;
+    bridge_mint_fee: bigint;
+    wallet_min_tons_for_storage: bigint;
+    wallet_gas_consumption: bigint;
+    minter_min_tons_for_storage: bigint;
+    discover_gas_consumption: bigint;
 };
 
 export type JettonBridgeParams = {
     bridge_address: Address;
     oracles_address: Address;
     state_flags: number;
-    burn_bridge_fee?: number;
+    burn_bridge_fee?: bigint;
     oracles: Array<Oracle>;
     external_chain_address?: Address;
     prices?: JettonBridgePrices;
@@ -351,38 +351,38 @@ export type JettonBridgeParams = {
 export type Validator = {
     address: Address;
     adnl_address: Address;
-    stake: number;
-    max_factor: number;
+    stake: bigint;
+    max_factor: bigint;
 };
 
 export type Validators = {
-    elect_at: number;
-    elect_close: number;
-    min_stake: number;
-    total_stake: number;
+    elect_at: bigint;
+    elect_close: bigint;
+    min_stake: bigint;
+    total_stake: bigint;
     validators: Array<Validator>;
 };
 
 export type AccountStorageInfo = {
-    used_cells: number;
-    used_bits: number;
-    used_public_cells: number;
+    used_cells: bigint;
+    used_bits: bigint;
+    used_public_cells: bigint;
     /**
      * time of the last payment
      */
-    last_paid: number;
-    due_payment: number;
+    last_paid: bigint;
+    due_payment: bigint;
 };
 
 export type BlockchainRawAccount = {
     address: Address;
-    balance: number;
+    balance: bigint;
     extra_balance?: {
         [key: string]: string;
     };
     code?: string;
     data?: string;
-    last_transaction_lt: number;
+    last_transaction_lt: bigint;
     last_transaction_hash?: string;
     frozen_hash?: string;
     status: AccountStatus;
@@ -395,7 +395,7 @@ export type BlockchainRawAccount = {
 
 export type Account = {
     address: Address;
-    balance: number;
+    balance: bigint;
     extra_balance?: Array<ExtraCurrency>;
     /**
      * {'USD': 1, 'IDR': 1000}
@@ -406,7 +406,7 @@ export type Account = {
     /**
      * unix timestamp
      */
-    last_activity: number;
+    last_activity: Date;
     status: AccountStatus;
     interfaces?: Array<string>;
     name?: string;
@@ -458,7 +458,7 @@ export type SignRawParams = {
      */
     commission: string;
     from: string;
-    valid_until: number;
+    valid_until: Date;
     messages: Array<SignRawMessage>;
 };
 
@@ -509,22 +509,22 @@ export type BlockchainConfig = {
     4: string;
     5?: {
         blackhole_addr?: string;
-        fee_burn_nom: number;
-        fee_burn_denom: number;
+        fee_burn_nom: bigint;
+        fee_burn_denom: bigint;
     };
     /**
      * Minting fees of new currencies.
      */
     6?: {
-        mint_new_price: number;
-        mint_add_price: number;
+        mint_new_price: bigint;
+        mint_add_price: bigint;
     };
     /**
      * The volume of each of the additional currencies in circulation.
      */
     7?: {
         currencies: Array<{
-            currency_id: number;
+            currency_id: bigint;
             amount: string;
         }>;
     };
@@ -532,8 +532,8 @@ export type BlockchainConfig = {
      * The network version and additional capabilities supported by the validators.
      */
     8?: {
-        version: number;
-        capabilities: number;
+        version: bigint;
+        capabilities: bigint;
     };
     /**
      * List of mandatory parameters of the blockchain config.
@@ -564,25 +564,25 @@ export type BlockchainConfig = {
      * The cost of filing complaints about incorrect operation of validators.
      */
     13?: {
-        deposit: number;
-        bit_price: number;
-        cell_price: number;
+        deposit: bigint;
+        bit_price: bigint;
+        cell_price: bigint;
     };
     /**
      * The reward in nanoTons for block creation in the TON blockchain.
      */
     14?: {
-        masterchain_block_fee: number;
-        basechain_block_fee: number;
+        masterchain_block_fee: bigint;
+        basechain_block_fee: bigint;
     };
     /**
      * The reward in nanoTons for block creation in the TON blockchain.
      */
     15?: {
-        validators_elected_for: number;
-        elections_start_before: number;
-        elections_end_before: number;
-        stake_held_for: number;
+        validators_elected_for: bigint;
+        elections_start_before: bigint;
+        elections_end_before: bigint;
+        stake_held_for: bigint;
     };
     /**
      * The limits on the number of validators in the TON blockchain.
@@ -599,18 +599,18 @@ export type BlockchainConfig = {
         min_stake: string;
         max_stake: string;
         min_total_stake: string;
-        max_stake_factor: number;
+        max_stake_factor: bigint;
     };
     /**
      * The prices for data storage.
      */
     18?: {
         storage_prices: Array<{
-            utime_since: number;
-            bit_price_ps: number;
-            cell_price_ps: number;
-            mc_bit_price_ps: number;
-            mc_cell_price_ps: number;
+            utime_since: bigint;
+            bit_price_ps: bigint;
+            cell_price_ps: bigint;
+            mc_bit_price_ps: bigint;
+            mc_cell_price_ps: bigint;
         }>;
     };
     /**
@@ -653,10 +653,10 @@ export type BlockchainConfig = {
      * The configuration for the Catchain protocol.
      */
     28?: {
-        mc_catchain_lifetime: number;
-        shard_catchain_lifetime: number;
-        shard_validators_lifetime: number;
-        shard_validators_num: number;
+        mc_catchain_lifetime: bigint;
+        shard_catchain_lifetime: bigint;
+        shard_validators_lifetime: bigint;
+        shard_validators_num: bigint;
         flags?: number;
         shuffle_mc_validators?: boolean;
     };
@@ -666,16 +666,16 @@ export type BlockchainConfig = {
     29?: {
         flags?: number;
         new_catchain_ids?: boolean;
-        round_candidates: number;
-        next_candidate_delay_ms: number;
-        consensus_timeout_ms: number;
-        fast_attempts: number;
-        attempt_duration: number;
-        catchain_max_deps: number;
-        max_block_bytes: number;
-        max_collated_bytes: number;
-        proto_version?: number;
-        catchain_max_blocks_coeff?: number;
+        round_candidates: bigint;
+        next_candidate_delay_ms: bigint;
+        consensus_timeout_ms: bigint;
+        fast_attempts: bigint;
+        attempt_duration: bigint;
+        catchain_max_deps: bigint;
+        max_block_bytes: bigint;
+        max_collated_bytes: bigint;
+        proto_version?: bigint;
+        catchain_max_blocks_coeff?: bigint;
     };
     /**
      * The configuration for the consensus protocol above catchain.
@@ -714,7 +714,7 @@ export type BlockchainConfig = {
     45?: {
         contracts: Array<{
             code_hash: string;
-            gas_usage: number;
+            gas_usage: bigint;
         }>;
     };
     /**
@@ -765,8 +765,8 @@ export type DomainNames = {
 
 export type DomainBid = {
     success: boolean;
-    value: number;
-    txTime: number;
+    value: bigint;
+    txTime: bigint;
     txHash: string;
     bidder: AccountAddress;
 };
@@ -796,7 +796,7 @@ export type JettonBalance = {
     extensions?: Array<string>;
     lock?: {
         amount: string;
-        till: number;
+        till: bigint;
     };
 };
 
@@ -827,7 +827,7 @@ export type Sale = {
 
 export type NftItem = {
     address: Address;
-    index: number;
+    index: bigint;
     owner?: AccountAddress;
     collection?: {
         address: Address;
@@ -863,7 +863,7 @@ export type Multisigs = {
 
 export type Multisig = {
     address: Address;
-    seqno: number;
+    seqno: bigint;
     threshold: number;
     signers: Array<string>;
     proposers: Array<string>;
@@ -872,14 +872,14 @@ export type Multisig = {
 
 export type MultisigOrder = {
     address: Address;
-    order_seqno: number;
+    order_seqno: bigint;
     threshold: number;
     sent_for_execution: boolean;
     signers: Array<string>;
     approvals_num: number;
-    expiration_date: number;
+    expiration_date: bigint;
     risk: Risk;
-    creation_date: number;
+    creation_date: bigint;
     signed_by: Array<string>;
 };
 
@@ -890,8 +890,8 @@ export type Refund = {
 
 export type ValueFlow = {
     account: AccountAddress;
-    ton: number;
-    fees: number;
+    ton: bigint;
+    fees: bigint;
     jettons?: Array<{
         account: AccountAddress;
         jetton: JettonPreview;
@@ -899,7 +899,7 @@ export type ValueFlow = {
         /**
          * @deprecated
          */
-        quantity: number;
+        quantity: bigint;
     }>;
 };
 
@@ -959,7 +959,7 @@ export type TonTransferAction = {
     /**
      * amount in nanotons
      */
-    amount: number;
+    amount: bigint;
     comment?: string;
     encrypted_comment?: EncryptedComment;
     refund?: Refund;
@@ -994,7 +994,7 @@ export type SmartContractAction = {
     /**
      * amount in nanotons
      */
-    ton_attached: number;
+    ton_attached: bigint;
     operation: string;
     payload?: string;
     refund?: Refund;
@@ -1087,7 +1087,7 @@ export type SubscriptionAction = {
     subscriber: AccountAddress;
     subscription: string;
     beneficiary: AccountAddress;
-    amount: number;
+    amount: bigint;
     initial: boolean;
 };
 
@@ -1109,7 +1109,7 @@ export type AuctionBidAction = {
  * validator's participation in elections
  */
 export type DepositStakeAction = {
-    amount: number;
+    amount: bigint;
     staker: AccountAddress;
     pool: AccountAddress;
     implementation: PoolImplementationType;
@@ -1119,7 +1119,7 @@ export type DepositStakeAction = {
  * validator's participation in elections
  */
 export type WithdrawStakeAction = {
-    amount: number;
+    amount: bigint;
     staker: AccountAddress;
     pool: AccountAddress;
     implementation: PoolImplementationType;
@@ -1129,19 +1129,19 @@ export type WithdrawStakeAction = {
  * validator's participation in elections
  */
 export type WithdrawStakeRequestAction = {
-    amount?: number;
+    amount?: bigint;
     staker: AccountAddress;
     pool: AccountAddress;
     implementation: PoolImplementationType;
 };
 
 export type ElectionsRecoverStakeAction = {
-    amount: number;
+    amount: bigint;
     staker: AccountAddress;
 };
 
 export type ElectionsDepositStakeAction = {
-    amount: number;
+    amount: bigint;
     staker: AccountAddress;
 };
 
@@ -1149,8 +1149,8 @@ export type JettonSwapAction = {
     dex: 'stonfi' | 'dedust' | 'megatonfi';
     amount_in: string;
     amount_out: string;
-    ton_in?: number;
-    ton_out?: number;
+    ton_in?: bigint;
+    ton_out?: bigint;
     user_wallet: AccountAddress;
     router: AccountAddress;
     jetton_master_in?: JettonPreview;
@@ -1189,13 +1189,13 @@ export type ActionSimplePreview = {
 export type AccountEvent = {
     event_id: string;
     account: AccountAddress;
-    timestamp: number;
+    timestamp: Date;
     actions: Array<Action>;
     /**
      * scam
      */
     is_scam: boolean;
-    lt: number;
+    lt: bigint;
     /**
      * Event is not finished yet. Transactions still happening
      */
@@ -1203,17 +1203,17 @@ export type AccountEvent = {
     /**
      * TODO
      */
-    extra: number;
+    extra: bigint;
 };
 
 export type AccountEvents = {
     events: Array<AccountEvent>;
-    next_from: number;
+    next_from: bigint;
 };
 
 export type TraceId = {
     id: string;
-    utime: number;
+    utime: bigint;
 };
 
 export type TraceIds = {
@@ -1229,13 +1229,13 @@ export type Subscription = {
     address: Address;
     wallet_address: Address;
     beneficiary_address: Address;
-    amount: number;
-    period: number;
-    start_time: number;
-    timeout: number;
-    last_payment_time: number;
-    last_request_time: number;
-    subscription_id: number;
+    amount: bigint;
+    period: bigint;
+    start_time: bigint;
+    timeout: bigint;
+    last_payment_time: bigint;
+    last_request_time: bigint;
+    subscription_id: bigint;
     failed_attempts: number;
 };
 
@@ -1246,14 +1246,14 @@ export type Subscriptions = {
 export type Auction = {
     domain: string;
     owner: string;
-    price: number;
-    bids: number;
-    date: number;
+    price: bigint;
+    bids: bigint;
+    date: bigint;
 };
 
 export type Auctions = {
     data: Array<Auction>;
-    total: number;
+    total: bigint;
 };
 
 export type WalletDns = {
@@ -1270,7 +1270,7 @@ export type DomainInfo = {
     /**
      * date of expiring. optional. not all domain in ton has expiration date
      */
-    expiring_at?: number;
+    expiring_at?: bigint;
     item?: NftItem;
 };
 
@@ -1286,7 +1286,7 @@ export type DnsRecord = {
 
 export type NftCollection = {
     address: Address;
-    next_item_index: number;
+    next_item_index: bigint;
     owner?: AccountAddress;
     raw_collection_content: string;
     metadata?: {
@@ -1321,7 +1321,7 @@ export type Risk = {
      * transfer all the remaining balance of the wallet.
      */
     transfer_all_remaining_balance: boolean;
-    ton: number;
+    ton: bigint;
     jettons: Array<JettonQuantity>;
     nfts: Array<NftItem>;
 };
@@ -1337,24 +1337,24 @@ export type DecodedMessage = {
     destination_wallet_version: string;
     ext_in_msg_decoded?: {
         wallet_v3?: {
-            subwallet_id: number;
-            valid_until: number;
-            seqno: number;
+            subwallet_id: bigint;
+            valid_until: Date;
+            seqno: bigint;
             raw_messages: Array<DecodedRawMessage>;
         };
         wallet_v4?: {
-            subwallet_id: number;
-            valid_until: number;
-            seqno: number;
+            subwallet_id: bigint;
+            valid_until: Date;
+            seqno: bigint;
             op: number;
             raw_messages: Array<DecodedRawMessage>;
         };
         wallet_v5?: {
-            valid_until: number;
+            valid_until: Date;
             raw_messages: Array<DecodedRawMessage>;
         };
         wallet_highload_v2?: {
-            subwallet_id: number;
+            subwallet_id: bigint;
             bounded_query_id: string;
             raw_messages: Array<DecodedRawMessage>;
         };
@@ -1373,14 +1373,14 @@ export type DecodedRawMessage = {
 
 export type Event = {
     event_id: string;
-    timestamp: number;
+    timestamp: Date;
     actions: Array<Action>;
     value_flow: Array<ValueFlow>;
     /**
      * scam
      */
     is_scam: boolean;
-    lt: number;
+    lt: bigint;
     /**
      * Event is not finished yet. Transactions still happening
      */
@@ -1440,7 +1440,7 @@ export type JettonHolders = {
     /**
      * total number of holders
      */
-    total: number;
+    total: bigint;
 };
 
 export type JettonTransferPayload = {
@@ -1460,30 +1460,30 @@ export type AccountStaking = {
 
 export type AccountStakingInfo = {
     pool: string;
-    amount: number;
-    pending_deposit: number;
-    pending_withdraw: number;
-    ready_withdraw: number;
+    amount: bigint;
+    pending_deposit: bigint;
+    pending_withdraw: bigint;
+    ready_withdraw: bigint;
 };
 
 export type PoolInfo = {
     address: Address;
     name: string;
-    total_amount: number;
+    total_amount: bigint;
     implementation: PoolImplementationType;
     /**
      * APY in percent
      */
     apy: number;
-    min_stake: number;
+    min_stake: bigint;
     /**
      * current nomination cycle beginning timestamp
      */
-    cycle_start: number;
+    cycle_start: Date;
     /**
      * current nomination cycle ending timestamp
      */
-    cycle_end: number;
+    cycle_end: Date;
     /**
      * this pool has verified source code or managed by trusted company
      */
@@ -1503,12 +1503,12 @@ export type PoolInfo = {
     /**
      * total stake of all nominators
      */
-    nominators_stake: number;
+    nominators_stake: bigint;
     /**
      * stake of validator
      */
-    validator_stake: number;
-    cycle_length?: number;
+    validator_stake: bigint;
+    cycle_length?: bigint;
 };
 
 export type PoolImplementation = {
@@ -1521,10 +1521,10 @@ export type PoolImplementation = {
 export type StorageProvider = {
     address: Address;
     accept_new_contracts: boolean;
-    rate_per_mb_day: number;
-    max_span: number;
-    minimal_file_size: number;
-    maximal_file_size: number;
+    rate_per_mb_day: bigint;
+    max_span: bigint;
+    minimal_file_size: bigint;
+    maximal_file_size: bigint;
 };
 
 export type FoundAccounts = {
@@ -1538,13 +1538,13 @@ export type FoundAccounts = {
 
 export type DnsExpiring = {
     items: Array<{
-        expiring_at: number;
+        expiring_at: bigint;
         name: string;
         dns_item?: NftItem;
     }>;
 };
 
-export type ChartPoints = [number, number];
+export type ChartPoints = [bigint, number];
 
 export type AccountInfoByStateInit = {
     public_key: string;
@@ -1602,7 +1602,7 @@ export type TokenRates = {
 export type MarketTonRates = {
     market: string;
     usd_price: number;
-    last_date_update: number;
+    last_date_update: bigint;
 };
 
 export type ExtraCurrency = {
@@ -1623,7 +1623,7 @@ export type Source = {
 };
 
 export type Method = {
-    id: number;
+    id: bigint;
     method: string;
 };
 
@@ -1738,12 +1738,12 @@ export type TargetBlockIdExtQuery = string;
 /**
  * lt
  */
-export type LtMustQuery = number;
+export type LtMustQuery = bigint;
 
 /**
  * lt
  */
-export type LtQuery = number;
+export type LtQuery = bigint;
 
 /**
  * hash
@@ -1758,7 +1758,7 @@ export type WorkchainQuery = number;
 /**
  * shard
  */
-export type ShardQuery = number;
+export type ShardQuery = bigint;
 
 /**
  * exact
@@ -1787,9 +1787,9 @@ export type SupportedExtensions = Array<string>;
 
 export type CurrencyQuery = string;
 
-export type FromQuery = number;
+export type FromQuery = bigint;
 
-export type ToQuery = number;
+export type ToQuery = bigint;
 
 /**
  * input parameters for contract get method
@@ -1819,7 +1819,7 @@ export type EmulationBoc = {
      */
     params?: Array<{
         address: Address;
-        balance?: number;
+        balance?: bigint;
     }>;
 };
 
@@ -1865,7 +1865,7 @@ export type AccountIds = {
 export type TonConnectProof = {
     address: Address;
     proof: {
-        timestamp: number;
+        timestamp: Date;
         domain: {
             length_bytes?: number;
             value: string;
@@ -1903,7 +1903,7 @@ export type GetOpenapiJsonErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -1929,7 +1929,7 @@ export type GetOpenapiYmlErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -1957,7 +1957,7 @@ export type StatusErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -1976,8 +1976,8 @@ export type GetReducedBlockchainBlocksData = {
     body?: never;
     path?: never;
     query: {
-        from: number;
-        to: number;
+        from: bigint;
+        to: bigint;
     };
     url: '/v2/blockchain/reduced/blocks';
 };
@@ -1988,7 +1988,7 @@ export type GetReducedBlockchainBlocksErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -2023,7 +2023,7 @@ export type GetBlockchainBlockErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -2057,7 +2057,7 @@ export type GetBlockchainMasterchainShardsErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -2092,7 +2092,7 @@ export type GetBlockchainMasterchainBlocksErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -2127,7 +2127,7 @@ export type GetBlockchainMasterchainTransactionsErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -2162,7 +2162,7 @@ export type GetBlockchainConfigFromBlockErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -2197,7 +2197,7 @@ export type GetRawBlockchainConfigFromBlockErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -2232,7 +2232,7 @@ export type GetBlockchainBlockTransactionsErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -2267,7 +2267,7 @@ export type GetBlockchainTransactionErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -2302,7 +2302,7 @@ export type GetBlockchainTransactionByMessageHashErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -2332,7 +2332,7 @@ export type GetBlockchainValidatorsErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -2362,7 +2362,7 @@ export type GetBlockchainMasterchainHeadErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -2397,7 +2397,7 @@ export type GetBlockchainRawAccountErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -2426,11 +2426,11 @@ export type GetBlockchainAccountTransactionsData = {
         /**
          * omit this parameter to get last transactions
          */
-        after_lt?: number;
+        after_lt?: bigint;
         /**
          * omit this parameter to get last transactions
          */
-        before_lt?: number;
+        before_lt?: bigint;
         limit?: number;
         /**
          * used to sort the result-set in ascending or descending order by lt.
@@ -2446,7 +2446,7 @@ export type GetBlockchainAccountTransactionsErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -2504,7 +2504,7 @@ export type ExecGetMethodForBlockchainAccountErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -2537,7 +2537,7 @@ export type SendBlockchainMessageErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -2564,7 +2564,7 @@ export type GetBlockchainConfigErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -2593,7 +2593,7 @@ export type GetRawBlockchainConfigErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -2628,7 +2628,7 @@ export type BlockchainAccountInspectErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -2663,7 +2663,7 @@ export type AddressParseErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -2708,7 +2708,7 @@ export type GetAccountsErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -2741,7 +2741,7 @@ export type GetAccountErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -2774,7 +2774,7 @@ export type AccountDnsBackResolveErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -2818,7 +2818,7 @@ export type GetAccountJettonsBalancesErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -2866,7 +2866,7 @@ export type GetAccountJettonBalanceErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -2898,10 +2898,10 @@ export type GetAccountJettonsHistoryData = {
         /**
          * omit this parameter to get last events
          */
-        before_lt?: number;
+        before_lt?: bigint;
         limit: number;
-        start_date?: number;
-        end_date?: number;
+        start_date?: bigint;
+        end_date?: bigint;
     };
     url: '/v2/accounts/{account_id}/jettons/history';
 };
@@ -2912,7 +2912,7 @@ export type GetAccountJettonsHistoryErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -2948,10 +2948,10 @@ export type GetAccountJettonHistoryByIdData = {
         /**
          * omit this parameter to get last events
          */
-        before_lt?: number;
+        before_lt?: bigint;
         limit: number;
-        start_date?: number;
-        end_date?: number;
+        start_date?: bigint;
+        end_date?: bigint;
     };
     url: '/v2/accounts/{account_id}/jettons/{jetton_id}/history';
 };
@@ -2962,7 +2962,7 @@ export type GetAccountJettonHistoryByIdErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -3008,7 +3008,7 @@ export type GetAccountNftItemsErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -3039,10 +3039,10 @@ export type GetAccountNftHistoryData = {
         /**
          * omit this parameter to get last events
          */
-        before_lt?: number;
+        before_lt?: bigint;
         limit: number;
-        start_date?: number;
-        end_date?: number;
+        start_date?: bigint;
+        end_date?: bigint;
     };
     url: '/v2/accounts/{account_id}/nfts/history';
 };
@@ -3053,7 +3053,7 @@ export type GetAccountNftHistoryErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -3093,10 +3093,10 @@ export type GetAccountEventsData = {
         /**
          * omit this parameter to get last events
          */
-        before_lt?: number;
+        before_lt?: bigint;
         limit: number;
-        start_date?: number;
-        end_date?: number;
+        start_date?: bigint;
+        end_date?: bigint;
     };
     url: '/v2/accounts/{account_id}/events';
 };
@@ -3107,7 +3107,7 @@ export type GetAccountEventsErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -3152,7 +3152,7 @@ export type GetAccountEventErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -3179,7 +3179,7 @@ export type GetAccountTracesData = {
         /**
          * omit this parameter to get last events
          */
-        before_lt?: number;
+        before_lt?: bigint;
         limit?: number;
     };
     url: '/v2/accounts/{account_id}/traces';
@@ -3191,7 +3191,7 @@ export type GetAccountTracesErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -3224,7 +3224,7 @@ export type GetAccountSubscriptionsErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -3259,7 +3259,7 @@ export type ReindexAccountErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -3287,7 +3287,7 @@ export type SearchAccountsErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -3325,7 +3325,7 @@ export type GetAccountDnsExpiringErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -3360,7 +3360,7 @@ export type GetAccountPublicKeyErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -3396,7 +3396,7 @@ export type GetAccountMultisigsErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -3421,8 +3421,8 @@ export type GetAccountDiffData = {
         account_id: string;
     };
     query: {
-        start_date: number;
-        end_date: number;
+        start_date: bigint;
+        end_date: bigint;
     };
     url: '/v2/accounts/{account_id}/diff';
 };
@@ -3433,7 +3433,7 @@ export type GetAccountDiffErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -3444,7 +3444,7 @@ export type GetAccountDiffResponses = {
      * account's balance change
      */
     200: {
-        balance_change: number;
+        balance_change: bigint;
     };
 };
 
@@ -3469,10 +3469,10 @@ export type GetAccountExtraCurrencyHistoryByIdData = {
         /**
          * omit this parameter to get last events
          */
-        before_lt?: number;
+        before_lt?: bigint;
         limit: number;
-        start_date?: number;
-        end_date?: number;
+        start_date?: bigint;
+        end_date?: bigint;
     };
     url: '/v2/accounts/{account_id}/extra-currency/{id}/history';
 };
@@ -3483,7 +3483,7 @@ export type GetAccountExtraCurrencyHistoryByIdErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -3518,7 +3518,7 @@ export type GetDnsInfoErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -3551,7 +3551,7 @@ export type DnsResolveErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -3584,7 +3584,7 @@ export type GetDomainBidsErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -3617,7 +3617,7 @@ export type GetAllAuctionsErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -3648,7 +3648,7 @@ export type GetNftCollectionsErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -3682,7 +3682,7 @@ export type GetNftCollectionErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -3713,7 +3713,7 @@ export type GetNftCollectionItemsByAddressesErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -3751,7 +3751,7 @@ export type GetItemsFromCollectionErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -3784,7 +3784,7 @@ export type GetNftItemsByAddressesErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -3819,7 +3819,7 @@ export type GetNftItemByAddressErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -3850,10 +3850,10 @@ export type GetNftHistoryByIdData = {
         /**
          * omit this parameter to get last events
          */
-        before_lt?: number;
+        before_lt?: bigint;
         limit: number;
-        start_date?: number;
-        end_date?: number;
+        start_date?: bigint;
+        end_date?: bigint;
     };
     url: '/v2/nfts/{account_id}/history';
 };
@@ -3864,7 +3864,7 @@ export type GetNftHistoryByIdErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -3898,7 +3898,7 @@ export type GetTraceErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -3934,7 +3934,7 @@ export type GetEventErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -3970,7 +3970,7 @@ export type GetAccountInscriptionsErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -4002,7 +4002,7 @@ export type GetAccountInscriptionsHistoryData = {
         /**
          * omit this parameter to get last events
          */
-        before_lt?: number;
+        before_lt?: bigint;
         limit?: number;
     };
     url: '/v2/experimental/accounts/{account_id}/inscriptions/history';
@@ -4014,7 +4014,7 @@ export type GetAccountInscriptionsHistoryErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -4047,7 +4047,7 @@ export type GetAccountInscriptionsHistoryByTickerData = {
         /**
          * omit this parameter to get last events
          */
-        before_lt?: number;
+        before_lt?: bigint;
         limit?: number;
     };
     url: '/v2/experimental/accounts/{account_id}/inscriptions/{ticker}/history';
@@ -4059,7 +4059,7 @@ export type GetAccountInscriptionsHistoryByTickerErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -4097,7 +4097,7 @@ export type GetInscriptionOpTemplateErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -4133,7 +4133,7 @@ export type GetJettonsErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -4166,7 +4166,7 @@ export type GetJettonInfoErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -4197,7 +4197,7 @@ export type GetJettonInfosByAddressesErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -4235,7 +4235,7 @@ export type GetJettonHoldersErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -4272,7 +4272,7 @@ export type GetJettonTransferPayloadErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -4310,7 +4310,7 @@ export type GetJettonsEventsErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -4343,7 +4343,7 @@ export type GetExtraCurrencyInfoErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -4378,7 +4378,7 @@ export type GetAccountNominatorsPoolsErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -4416,7 +4416,7 @@ export type GetStakingPoolInfoErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -4453,7 +4453,7 @@ export type GetStakingPoolHistoryErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -4497,7 +4497,7 @@ export type GetStakingPoolsErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -4530,7 +4530,7 @@ export type GetStorageProvidersErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -4570,7 +4570,7 @@ export type GetRatesErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -4598,8 +4598,8 @@ export type GetChartRatesData = {
          */
         token: string;
         currency?: string;
-        start_date?: number;
-        end_date?: number;
+        start_date?: bigint;
+        end_date?: bigint;
         points_count?: number;
     };
     url: '/v2/rates/chart';
@@ -4611,7 +4611,7 @@ export type GetChartRatesErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -4641,7 +4641,7 @@ export type GetMarketsRatesErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -4671,7 +4671,7 @@ export type GetTonConnectPayloadErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -4706,7 +4706,7 @@ export type GetAccountInfoByStateInitErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -4739,7 +4739,7 @@ export type TonConnectProofErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -4774,7 +4774,7 @@ export type GetAccountSeqnoErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -4802,7 +4802,7 @@ export type GaslessConfigErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -4838,7 +4838,7 @@ export type GaslessEstimateErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -4869,7 +4869,7 @@ export type GaslessSendErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -4897,7 +4897,7 @@ export type GetWalletsByPublicKeyErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -4927,7 +4927,7 @@ export type GetRawMasterchainInfoErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -4966,7 +4966,7 @@ export type GetRawMasterchainInfoExtErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -4980,7 +4980,7 @@ export type GetRawMasterchainInfoExtResponses = {
     200: {
         mode: number;
         version: number;
-        capabilities: number;
+        capabilities: bigint;
         last: BlockRaw;
         last_utime: number;
         now: number;
@@ -5005,7 +5005,7 @@ export type GetRawTimeErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -5040,7 +5040,7 @@ export type GetRawBlockchainBlockErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -5078,7 +5078,7 @@ export type GetRawBlockchainBlockStateErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -5123,7 +5123,7 @@ export type GetRawBlockchainBlockHeaderErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -5160,7 +5160,7 @@ export type SendRawMessageErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -5200,7 +5200,7 @@ export type GetRawAccountStateErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -5238,7 +5238,7 @@ export type GetRawShardInfoData = {
         /**
          * shard
          */
-        shard: number;
+        shard: bigint;
         /**
          * exact
          */
@@ -5253,7 +5253,7 @@ export type GetRawShardInfoErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -5291,7 +5291,7 @@ export type GetAllRawShardsInfoErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -5327,7 +5327,7 @@ export type GetRawTransactionsData = {
         /**
          * lt
          */
-        lt: number;
+        lt: bigint;
         /**
          * hash
          */
@@ -5342,7 +5342,7 @@ export type GetRawTransactionsErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -5385,7 +5385,7 @@ export type GetRawListBlockTransactionsData = {
         /**
          * lt
          */
-        lt?: number;
+        lt?: bigint;
     };
     url: '/v2/liteserver/list_block_transactions/{block_id}';
 };
@@ -5396,7 +5396,7 @@ export type GetRawListBlockTransactionsErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -5414,7 +5414,7 @@ export type GetRawListBlockTransactionsResponses = {
         ids: Array<{
             mode: number;
             account?: string;
-            lt?: number;
+            lt?: bigint;
             hash?: string;
         }>;
         proof: string;
@@ -5450,7 +5450,7 @@ export type GetRawBlockProofErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -5480,7 +5480,7 @@ export type GetRawBlockProofResponses = {
                 dest_proof: string;
                 config_proof: string;
                 signatures: {
-                    validator_set_hash: number;
+                    validator_set_hash: bigint;
                     catchain_seqno: number;
                     signatures: Array<{
                         node_id_short: string;
@@ -5517,7 +5517,7 @@ export type GetRawConfigErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -5555,7 +5555,7 @@ export type GetRawShardBlockProofErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -5591,7 +5591,7 @@ export type GetOutMsgQueueSizesErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -5631,7 +5631,7 @@ export type GetMultisigAccountErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -5663,7 +5663,7 @@ export type DecodeMessageErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -5699,7 +5699,7 @@ export type EmulateMessageToEventErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -5734,7 +5734,7 @@ export type EmulateMessageToTraceErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -5770,7 +5770,7 @@ export type EmulateMessageToWalletErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 
@@ -5813,7 +5813,7 @@ export type EmulateMessageToAccountEventErrors = {
      */
     default: {
         error: string;
-        error_code?: number;
+        error_code?: bigint;
     };
 };
 

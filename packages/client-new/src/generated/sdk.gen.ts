@@ -319,6 +319,72 @@ import type {
     EmulateMessageToAccountEventErrors
 } from './types.gen.js';
 import { client as _heyApiClient } from './client.gen.js';
+import {
+    getReducedBlockchainBlocksResponseTransformer,
+    getBlockchainBlockResponseTransformer,
+    getBlockchainMasterchainShardsResponseTransformer,
+    getBlockchainMasterchainBlocksResponseTransformer,
+    getBlockchainMasterchainTransactionsResponseTransformer,
+    getBlockchainConfigFromBlockResponseTransformer,
+    getBlockchainBlockTransactionsResponseTransformer,
+    getBlockchainTransactionResponseTransformer,
+    getBlockchainTransactionByMessageHashResponseTransformer,
+    getBlockchainValidatorsResponseTransformer,
+    getBlockchainMasterchainHeadResponseTransformer,
+    getBlockchainRawAccountResponseTransformer,
+    getBlockchainAccountTransactionsResponseTransformer,
+    execGetMethodForBlockchainAccountResponseTransformer,
+    getBlockchainConfigResponseTransformer,
+    blockchainAccountInspectResponseTransformer,
+    getAccountsResponseTransformer,
+    getAccountResponseTransformer,
+    getAccountJettonsBalancesResponseTransformer,
+    getAccountJettonBalanceResponseTransformer,
+    getAccountJettonsHistoryResponseTransformer,
+    getAccountJettonHistoryByIdResponseTransformer,
+    getAccountNftItemsResponseTransformer,
+    getAccountNftHistoryResponseTransformer,
+    getAccountEventsResponseTransformer,
+    getAccountEventResponseTransformer,
+    getAccountTracesResponseTransformer,
+    getAccountSubscriptionsResponseTransformer,
+    getAccountDnsExpiringResponseTransformer,
+    getAccountMultisigsResponseTransformer,
+    getAccountDiffResponseTransformer,
+    getAccountExtraCurrencyHistoryByIdResponseTransformer,
+    getDnsInfoResponseTransformer,
+    getDomainBidsResponseTransformer,
+    getAllAuctionsResponseTransformer,
+    getNftCollectionsResponseTransformer,
+    getNftCollectionResponseTransformer,
+    getNftCollectionItemsByAddressesResponseTransformer,
+    getItemsFromCollectionResponseTransformer,
+    getNftItemsByAddressesResponseTransformer,
+    getNftItemByAddressResponseTransformer,
+    getNftHistoryByIdResponseTransformer,
+    getTraceResponseTransformer,
+    getEventResponseTransformer,
+    getAccountInscriptionsHistoryResponseTransformer,
+    getAccountInscriptionsHistoryByTickerResponseTransformer,
+    getJettonHoldersResponseTransformer,
+    getJettonsEventsResponseTransformer,
+    getAccountNominatorsPoolsResponseTransformer,
+    getStakingPoolInfoResponseTransformer,
+    getStakingPoolsResponseTransformer,
+    getStorageProvidersResponseTransformer,
+    getMarketsRatesResponseTransformer,
+    gaslessEstimateResponseTransformer,
+    getWalletsByPublicKeyResponseTransformer,
+    getRawMasterchainInfoExtResponseTransformer,
+    getRawListBlockTransactionsResponseTransformer,
+    getRawBlockProofResponseTransformer,
+    getMultisigAccountResponseTransformer,
+    decodeMessageResponseTransformer,
+    emulateMessageToEventResponseTransformer,
+    emulateMessageToTraceResponseTransformer,
+    emulateMessageToWalletResponseTransformer,
+    emulateMessageToAccountEventResponseTransformer
+} from './transformers.gen.js';
 
 export type Options<
     TData extends TDataShape = TDataShape,
@@ -392,6 +458,7 @@ export const getReducedBlockchainBlocks = <ThrowOnError extends boolean = false>
         GetReducedBlockchainBlocksErrors,
         ThrowOnError
     >({
+        responseTransformer: getReducedBlockchainBlocksResponseTransformer,
         url: '/v2/blockchain/reduced/blocks',
         ...options
     });
@@ -408,6 +475,7 @@ export const getBlockchainBlock = <ThrowOnError extends boolean = false>(
         GetBlockchainBlockErrors,
         ThrowOnError
     >({
+        responseTransformer: getBlockchainBlockResponseTransformer,
         url: '/v2/blockchain/blocks/{block_id}',
         ...options
     });
@@ -424,6 +492,7 @@ export const getBlockchainMasterchainShards = <ThrowOnError extends boolean = fa
         GetBlockchainMasterchainShardsErrors,
         ThrowOnError
     >({
+        responseTransformer: getBlockchainMasterchainShardsResponseTransformer,
         url: '/v2/blockchain/masterchain/{masterchain_seqno}/shards',
         ...options
     });
@@ -440,6 +509,7 @@ export const getBlockchainMasterchainBlocks = <ThrowOnError extends boolean = fa
         GetBlockchainMasterchainBlocksErrors,
         ThrowOnError
     >({
+        responseTransformer: getBlockchainMasterchainBlocksResponseTransformer,
         url: '/v2/blockchain/masterchain/{masterchain_seqno}/blocks',
         ...options
     });
@@ -456,6 +526,7 @@ export const getBlockchainMasterchainTransactions = <ThrowOnError extends boolea
         GetBlockchainMasterchainTransactionsErrors,
         ThrowOnError
     >({
+        responseTransformer: getBlockchainMasterchainTransactionsResponseTransformer,
         url: '/v2/blockchain/masterchain/{masterchain_seqno}/transactions',
         ...options
     });
@@ -472,6 +543,7 @@ export const getBlockchainConfigFromBlock = <ThrowOnError extends boolean = fals
         GetBlockchainConfigFromBlockErrors,
         ThrowOnError
     >({
+        responseTransformer: getBlockchainConfigFromBlockResponseTransformer,
         url: '/v2/blockchain/masterchain/{masterchain_seqno}/config',
         ...options
     });
@@ -504,6 +576,7 @@ export const getBlockchainBlockTransactions = <ThrowOnError extends boolean = fa
         GetBlockchainBlockTransactionsErrors,
         ThrowOnError
     >({
+        responseTransformer: getBlockchainBlockTransactionsResponseTransformer,
         url: '/v2/blockchain/blocks/{block_id}/transactions',
         ...options
     });
@@ -520,6 +593,7 @@ export const getBlockchainTransaction = <ThrowOnError extends boolean = false>(
         GetBlockchainTransactionErrors,
         ThrowOnError
     >({
+        responseTransformer: getBlockchainTransactionResponseTransformer,
         url: '/v2/blockchain/transactions/{transaction_id}',
         ...options
     });
@@ -536,6 +610,7 @@ export const getBlockchainTransactionByMessageHash = <ThrowOnError extends boole
         GetBlockchainTransactionByMessageHashErrors,
         ThrowOnError
     >({
+        responseTransformer: getBlockchainTransactionByMessageHashResponseTransformer,
         url: '/v2/blockchain/messages/{msg_id}/transaction',
         ...options
     });
@@ -552,6 +627,7 @@ export const getBlockchainValidators = <ThrowOnError extends boolean = false>(
         GetBlockchainValidatorsErrors,
         ThrowOnError
     >({
+        responseTransformer: getBlockchainValidatorsResponseTransformer,
         url: '/v2/blockchain/validators',
         ...options
     });
@@ -568,6 +644,7 @@ export const getBlockchainMasterchainHead = <ThrowOnError extends boolean = fals
         GetBlockchainMasterchainHeadErrors,
         ThrowOnError
     >({
+        responseTransformer: getBlockchainMasterchainHeadResponseTransformer,
         url: '/v2/blockchain/masterchain-head',
         ...options
     });
@@ -584,6 +661,7 @@ export const getBlockchainRawAccount = <ThrowOnError extends boolean = false>(
         GetBlockchainRawAccountErrors,
         ThrowOnError
     >({
+        responseTransformer: getBlockchainRawAccountResponseTransformer,
         url: '/v2/blockchain/accounts/{account_id}',
         ...options
     });
@@ -600,6 +678,7 @@ export const getBlockchainAccountTransactions = <ThrowOnError extends boolean = 
         GetBlockchainAccountTransactionsErrors,
         ThrowOnError
     >({
+        responseTransformer: getBlockchainAccountTransactionsResponseTransformer,
         url: '/v2/blockchain/accounts/{account_id}/transactions',
         ...options
     });
@@ -616,6 +695,7 @@ export const execGetMethodForBlockchainAccount = <ThrowOnError extends boolean =
         ExecGetMethodForBlockchainAccountErrors,
         ThrowOnError
     >({
+        responseTransformer: execGetMethodForBlockchainAccountResponseTransformer,
         url: '/v2/blockchain/accounts/{account_id}/methods/{method_name}',
         ...options
     });
@@ -652,6 +732,7 @@ export const getBlockchainConfig = <ThrowOnError extends boolean = false>(
         GetBlockchainConfigErrors,
         ThrowOnError
     >({
+        responseTransformer: getBlockchainConfigResponseTransformer,
         url: '/v2/blockchain/config',
         ...options
     });
@@ -684,6 +765,7 @@ export const blockchainAccountInspect = <ThrowOnError extends boolean = false>(
         BlockchainAccountInspectErrors,
         ThrowOnError
     >({
+        responseTransformer: blockchainAccountInspectResponseTransformer,
         url: '/v2/blockchain/accounts/{account_id}/inspect',
         ...options
     });
@@ -716,6 +798,7 @@ export const getAccounts = <ThrowOnError extends boolean = false>(
         GetAccountsErrors,
         ThrowOnError
     >({
+        responseTransformer: getAccountsResponseTransformer,
         url: '/v2/accounts/_bulk',
         ...options,
         headers: {
@@ -736,6 +819,7 @@ export const getAccount = <ThrowOnError extends boolean = false>(
         GetAccountErrors,
         ThrowOnError
     >({
+        responseTransformer: getAccountResponseTransformer,
         url: '/v2/accounts/{account_id}',
         ...options
     });
@@ -774,6 +858,7 @@ export const getAccountJettonsBalances = <ThrowOnError extends boolean = false>(
                 style: 'form'
             }
         },
+        responseTransformer: getAccountJettonsBalancesResponseTransformer,
         url: '/v2/accounts/{account_id}/jettons',
         ...options
     });
@@ -796,6 +881,7 @@ export const getAccountJettonBalance = <ThrowOnError extends boolean = false>(
                 style: 'form'
             }
         },
+        responseTransformer: getAccountJettonBalanceResponseTransformer,
         url: '/v2/accounts/{account_id}/jettons/{jetton_id}',
         ...options
     });
@@ -812,6 +898,7 @@ export const getAccountJettonsHistory = <ThrowOnError extends boolean = false>(
         GetAccountJettonsHistoryErrors,
         ThrowOnError
     >({
+        responseTransformer: getAccountJettonsHistoryResponseTransformer,
         url: '/v2/accounts/{account_id}/jettons/history',
         ...options
     });
@@ -828,6 +915,7 @@ export const getAccountJettonHistoryById = <ThrowOnError extends boolean = false
         GetAccountJettonHistoryByIdErrors,
         ThrowOnError
     >({
+        responseTransformer: getAccountJettonHistoryByIdResponseTransformer,
         url: '/v2/accounts/{account_id}/jettons/{jetton_id}/history',
         ...options
     });
@@ -844,6 +932,7 @@ export const getAccountNftItems = <ThrowOnError extends boolean = false>(
         GetAccountNftItemsErrors,
         ThrowOnError
     >({
+        responseTransformer: getAccountNftItemsResponseTransformer,
         url: '/v2/accounts/{account_id}/nfts',
         ...options
     });
@@ -860,6 +949,7 @@ export const getAccountNftHistory = <ThrowOnError extends boolean = false>(
         GetAccountNftHistoryErrors,
         ThrowOnError
     >({
+        responseTransformer: getAccountNftHistoryResponseTransformer,
         url: '/v2/accounts/{account_id}/nfts/history',
         ...options
     });
@@ -876,6 +966,7 @@ export const getAccountEvents = <ThrowOnError extends boolean = false>(
         GetAccountEventsErrors,
         ThrowOnError
     >({
+        responseTransformer: getAccountEventsResponseTransformer,
         url: '/v2/accounts/{account_id}/events',
         ...options
     });
@@ -892,6 +983,7 @@ export const getAccountEvent = <ThrowOnError extends boolean = false>(
         GetAccountEventErrors,
         ThrowOnError
     >({
+        responseTransformer: getAccountEventResponseTransformer,
         url: '/v2/accounts/{account_id}/events/{event_id}',
         ...options
     });
@@ -908,6 +1000,7 @@ export const getAccountTraces = <ThrowOnError extends boolean = false>(
         GetAccountTracesErrors,
         ThrowOnError
     >({
+        responseTransformer: getAccountTracesResponseTransformer,
         url: '/v2/accounts/{account_id}/traces',
         ...options
     });
@@ -924,6 +1017,7 @@ export const getAccountSubscriptions = <ThrowOnError extends boolean = false>(
         GetAccountSubscriptionsErrors,
         ThrowOnError
     >({
+        responseTransformer: getAccountSubscriptionsResponseTransformer,
         url: '/v2/accounts/{account_id}/subscriptions',
         ...options
     });
@@ -972,6 +1066,7 @@ export const getAccountDnsExpiring = <ThrowOnError extends boolean = false>(
         GetAccountDnsExpiringErrors,
         ThrowOnError
     >({
+        responseTransformer: getAccountDnsExpiringResponseTransformer,
         url: '/v2/accounts/{account_id}/dns/expiring',
         ...options
     });
@@ -1004,6 +1099,7 @@ export const getAccountMultisigs = <ThrowOnError extends boolean = false>(
         GetAccountMultisigsErrors,
         ThrowOnError
     >({
+        responseTransformer: getAccountMultisigsResponseTransformer,
         url: '/v2/accounts/{account_id}/multisigs',
         ...options
     });
@@ -1020,6 +1116,7 @@ export const getAccountDiff = <ThrowOnError extends boolean = false>(
         GetAccountDiffErrors,
         ThrowOnError
     >({
+        responseTransformer: getAccountDiffResponseTransformer,
         url: '/v2/accounts/{account_id}/diff',
         ...options
     });
@@ -1036,6 +1133,7 @@ export const getAccountExtraCurrencyHistoryById = <ThrowOnError extends boolean 
         GetAccountExtraCurrencyHistoryByIdErrors,
         ThrowOnError
     >({
+        responseTransformer: getAccountExtraCurrencyHistoryByIdResponseTransformer,
         url: '/v2/accounts/{account_id}/extra-currency/{id}/history',
         ...options
     });
@@ -1052,6 +1150,7 @@ export const getDnsInfo = <ThrowOnError extends boolean = false>(
         GetDnsInfoErrors,
         ThrowOnError
     >({
+        responseTransformer: getDnsInfoResponseTransformer,
         url: '/v2/dns/{domain_name}',
         ...options
     });
@@ -1084,6 +1183,7 @@ export const getDomainBids = <ThrowOnError extends boolean = false>(
         GetDomainBidsErrors,
         ThrowOnError
     >({
+        responseTransformer: getDomainBidsResponseTransformer,
         url: '/v2/dns/{domain_name}/bids',
         ...options
     });
@@ -1100,6 +1200,7 @@ export const getAllAuctions = <ThrowOnError extends boolean = false>(
         GetAllAuctionsErrors,
         ThrowOnError
     >({
+        responseTransformer: getAllAuctionsResponseTransformer,
         url: '/v2/dns/auctions',
         ...options
     });
@@ -1116,6 +1217,7 @@ export const getNftCollections = <ThrowOnError extends boolean = false>(
         GetNftCollectionsErrors,
         ThrowOnError
     >({
+        responseTransformer: getNftCollectionsResponseTransformer,
         url: '/v2/nfts/collections',
         ...options
     });
@@ -1132,6 +1234,7 @@ export const getNftCollection = <ThrowOnError extends boolean = false>(
         GetNftCollectionErrors,
         ThrowOnError
     >({
+        responseTransformer: getNftCollectionResponseTransformer,
         url: '/v2/nfts/collections/{account_id}',
         ...options
     });
@@ -1148,6 +1251,7 @@ export const getNftCollectionItemsByAddresses = <ThrowOnError extends boolean = 
         GetNftCollectionItemsByAddressesErrors,
         ThrowOnError
     >({
+        responseTransformer: getNftCollectionItemsByAddressesResponseTransformer,
         url: '/v2/nfts/collections/_bulk',
         ...options,
         headers: {
@@ -1168,6 +1272,7 @@ export const getItemsFromCollection = <ThrowOnError extends boolean = false>(
         GetItemsFromCollectionErrors,
         ThrowOnError
     >({
+        responseTransformer: getItemsFromCollectionResponseTransformer,
         url: '/v2/nfts/collections/{account_id}/items',
         ...options
     });
@@ -1184,6 +1289,7 @@ export const getNftItemsByAddresses = <ThrowOnError extends boolean = false>(
         GetNftItemsByAddressesErrors,
         ThrowOnError
     >({
+        responseTransformer: getNftItemsByAddressesResponseTransformer,
         url: '/v2/nfts/_bulk',
         ...options,
         headers: {
@@ -1204,6 +1310,7 @@ export const getNftItemByAddress = <ThrowOnError extends boolean = false>(
         GetNftItemByAddressErrors,
         ThrowOnError
     >({
+        responseTransformer: getNftItemByAddressResponseTransformer,
         url: '/v2/nfts/{account_id}',
         ...options
     });
@@ -1220,6 +1327,7 @@ export const getNftHistoryById = <ThrowOnError extends boolean = false>(
         GetNftHistoryByIdErrors,
         ThrowOnError
     >({
+        responseTransformer: getNftHistoryByIdResponseTransformer,
         url: '/v2/nfts/{account_id}/history',
         ...options
     });
@@ -1232,6 +1340,7 @@ export const getTrace = <ThrowOnError extends boolean = false>(
     options: Options<GetTraceData, ThrowOnError>
 ) => {
     return (options.client ?? _heyApiClient).get<GetTraceResponses, GetTraceErrors, ThrowOnError>({
+        responseTransformer: getTraceResponseTransformer,
         url: '/v2/traces/{trace_id}',
         ...options
     });
@@ -1244,6 +1353,7 @@ export const getEvent = <ThrowOnError extends boolean = false>(
     options: Options<GetEventData, ThrowOnError>
 ) => {
     return (options.client ?? _heyApiClient).get<GetEventResponses, GetEventErrors, ThrowOnError>({
+        responseTransformer: getEventResponseTransformer,
         url: '/v2/events/{event_id}',
         ...options
     });
@@ -1276,6 +1386,7 @@ export const getAccountInscriptionsHistory = <ThrowOnError extends boolean = fal
         GetAccountInscriptionsHistoryErrors,
         ThrowOnError
     >({
+        responseTransformer: getAccountInscriptionsHistoryResponseTransformer,
         url: '/v2/experimental/accounts/{account_id}/inscriptions/history',
         ...options
     });
@@ -1292,6 +1403,7 @@ export const getAccountInscriptionsHistoryByTicker = <ThrowOnError extends boole
         GetAccountInscriptionsHistoryByTickerErrors,
         ThrowOnError
     >({
+        responseTransformer: getAccountInscriptionsHistoryByTickerResponseTransformer,
         url: '/v2/experimental/accounts/{account_id}/inscriptions/{ticker}/history',
         ...options
     });
@@ -1376,6 +1488,7 @@ export const getJettonHolders = <ThrowOnError extends boolean = false>(
         GetJettonHoldersErrors,
         ThrowOnError
     >({
+        responseTransformer: getJettonHoldersResponseTransformer,
         url: '/v2/jettons/{account_id}/holders',
         ...options
     });
@@ -1408,6 +1521,7 @@ export const getJettonsEvents = <ThrowOnError extends boolean = false>(
         GetJettonsEventsErrors,
         ThrowOnError
     >({
+        responseTransformer: getJettonsEventsResponseTransformer,
         url: '/v2/events/{event_id}/jettons',
         ...options
     });
@@ -1440,6 +1554,7 @@ export const getAccountNominatorsPools = <ThrowOnError extends boolean = false>(
         GetAccountNominatorsPoolsErrors,
         ThrowOnError
     >({
+        responseTransformer: getAccountNominatorsPoolsResponseTransformer,
         url: '/v2/staking/nominator/{account_id}/pools',
         ...options
     });
@@ -1456,6 +1571,7 @@ export const getStakingPoolInfo = <ThrowOnError extends boolean = false>(
         GetStakingPoolInfoErrors,
         ThrowOnError
     >({
+        responseTransformer: getStakingPoolInfoResponseTransformer,
         url: '/v2/staking/pool/{account_id}',
         ...options
     });
@@ -1488,6 +1604,7 @@ export const getStakingPools = <ThrowOnError extends boolean = false>(
         GetStakingPoolsErrors,
         ThrowOnError
     >({
+        responseTransformer: getStakingPoolsResponseTransformer,
         url: '/v2/staking/pools',
         ...options
     });
@@ -1504,6 +1621,7 @@ export const getStorageProviders = <ThrowOnError extends boolean = false>(
         GetStorageProvidersErrors,
         ThrowOnError
     >({
+        responseTransformer: getStorageProvidersResponseTransformer,
         url: '/v2/storage/providers',
         ...options
     });
@@ -1554,6 +1672,7 @@ export const getMarketsRates = <ThrowOnError extends boolean = false>(
         GetMarketsRatesErrors,
         ThrowOnError
     >({
+        responseTransformer: getMarketsRatesResponseTransformer,
         url: '/v2/rates/markets',
         ...options
     });
@@ -1658,6 +1777,7 @@ export const gaslessEstimate = <ThrowOnError extends boolean = false>(
         GaslessEstimateErrors,
         ThrowOnError
     >({
+        responseTransformer: gaslessEstimateResponseTransformer,
         url: '/v2/gasless/estimate/{master_id}',
         ...options,
         headers: {
@@ -1698,6 +1818,7 @@ export const getWalletsByPublicKey = <ThrowOnError extends boolean = false>(
         GetWalletsByPublicKeyErrors,
         ThrowOnError
     >({
+        responseTransformer: getWalletsByPublicKeyResponseTransformer,
         url: '/v2/pubkeys/{public_key}/wallets',
         ...options
     });
@@ -1730,6 +1851,7 @@ export const getRawMasterchainInfoExt = <ThrowOnError extends boolean = false>(
         GetRawMasterchainInfoExtErrors,
         ThrowOnError
     >({
+        responseTransformer: getRawMasterchainInfoExtResponseTransformer,
         url: '/v2/liteserver/get_masterchain_info_ext',
         ...options
     });
@@ -1894,6 +2016,7 @@ export const getRawListBlockTransactions = <ThrowOnError extends boolean = false
         GetRawListBlockTransactionsErrors,
         ThrowOnError
     >({
+        responseTransformer: getRawListBlockTransactionsResponseTransformer,
         url: '/v2/liteserver/list_block_transactions/{block_id}',
         ...options
     });
@@ -1910,6 +2033,7 @@ export const getRawBlockProof = <ThrowOnError extends boolean = false>(
         GetRawBlockProofErrors,
         ThrowOnError
     >({
+        responseTransformer: getRawBlockProofResponseTransformer,
         url: '/v2/liteserver/get_block_proof',
         ...options
     });
@@ -1974,6 +2098,7 @@ export const getMultisigAccount = <ThrowOnError extends boolean = false>(
         GetMultisigAccountErrors,
         ThrowOnError
     >({
+        responseTransformer: getMultisigAccountResponseTransformer,
         url: '/v2/multisig/{account_id}',
         ...options
     });
@@ -1990,6 +2115,7 @@ export const decodeMessage = <ThrowOnError extends boolean = false>(
         DecodeMessageErrors,
         ThrowOnError
     >({
+        responseTransformer: decodeMessageResponseTransformer,
         url: '/v2/message/decode',
         ...options,
         headers: {
@@ -2010,6 +2136,7 @@ export const emulateMessageToEvent = <ThrowOnError extends boolean = false>(
         EmulateMessageToEventErrors,
         ThrowOnError
     >({
+        responseTransformer: emulateMessageToEventResponseTransformer,
         url: '/v2/events/emulate',
         ...options,
         headers: {
@@ -2030,6 +2157,7 @@ export const emulateMessageToTrace = <ThrowOnError extends boolean = false>(
         EmulateMessageToTraceErrors,
         ThrowOnError
     >({
+        responseTransformer: emulateMessageToTraceResponseTransformer,
         url: '/v2/traces/emulate',
         ...options,
         headers: {
@@ -2050,6 +2178,7 @@ export const emulateMessageToWallet = <ThrowOnError extends boolean = false>(
         EmulateMessageToWalletErrors,
         ThrowOnError
     >({
+        responseTransformer: emulateMessageToWalletResponseTransformer,
         url: '/v2/wallet/emulate',
         ...options,
         headers: {
@@ -2070,6 +2199,7 @@ export const emulateMessageToAccountEvent = <ThrowOnError extends boolean = fals
         EmulateMessageToAccountEventErrors,
         ThrowOnError
     >({
+        responseTransformer: emulateMessageToAccountEventResponseTransformer,
         url: '/v2/accounts/{account_id}/events/emulate',
         ...options,
         headers: {
