@@ -26,6 +26,8 @@
   "scripts": {
     "generate": "openapi-ts && tsx ./src/scripts/post-generate.ts",
     "build": "npm run generate && tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "clean": "rimraf ./dist"
   },
   "devDependencies": {
