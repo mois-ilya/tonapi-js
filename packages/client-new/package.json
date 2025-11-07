@@ -1,0 +1,46 @@
+{
+  "name": "@ton-api/client-new",
+  "version": "0.0.1",
+  "description": "New TonAPI SDK generated with @hey-api/openapi-ts",
+  "keywords": [
+    "TON",
+    "Blockchain",
+    "API",
+    "TonApi"
+  ],
+  "license": "MIT",
+  "author": "Ton Apps",
+  "authors": [
+    {
+      "name": "mois-ilya"
+    }
+  ],
+  "main": "./dist/index.ts",
+  "types": "./dist/index.ts",
+  "type": "module",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "generate": "openapi-ts && tsx ./src/scripts/post-generate.ts",
+    "build": "npm run generate && tsc",
+    "clean": "rimraf ./dist"
+  },
+  "devDependencies": {
+    "@hey-api/openapi-ts": "^0.73.0",
+    "@types/node": "^20.14.2",
+    "rimraf": "^5.0.7",
+    "tsx": "^4.16.2",
+    "typescript": "^5.4.5",
+    "yaml": "^2.8.1"
+  },
+  "dependencies": {
+    "core-js-pure": "^3.38.0"
+  },
+  "peerDependencies": {
+    "@ton/core": ">=0.60.1"
+  },
+  "packageManager": "npm@10.9.0"
+}
