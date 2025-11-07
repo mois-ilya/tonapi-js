@@ -2,6 +2,8 @@
 
 import { Cell } from '@ton/core';
 
+import { Address } from '@ton/core';
+
 import type {
     BlockchainAccountInspectResponse,
     DecodeMessageResponse,
@@ -559,6 +561,8 @@ const validatorsSchemaResponseTransformer = (data: any) => {
 const validatorSchemaResponseTransformer = (data: any) => {
     data.stake = BigInt(data.stake.toString());
     data.max_factor = BigInt(data.max_factor.toString());
+    
+    if (data.address) data.address = Address.parse(data.address);
     return data;
 };
 
@@ -580,6 +584,8 @@ const blockchainRawAccountSchemaResponseTransformer = (data: any) => {
     data.balance = BigInt(data.balance.toString());
     data.last_transaction_lt = BigInt(data.last_transaction_lt.toString());
     data.storage = accountStorageInfoSchemaResponseTransformer(data.storage);
+    
+    if (data.address) data.address = Address.parse(data.address);
     
     if (data.code) data.code = Cell.fromHex(data.code);
     if (data.data) data.data = Cell.fromHex(data.data);
@@ -668,6 +674,8 @@ const accountsSchemaResponseTransformer = (data: any) => {
 const accountSchemaResponseTransformer = (data: any) => {
     data.balance = BigInt(data.balance.toString());
     data.last_activity = new Date(Number(data.last_activity) * 1000);
+    
+    if (data.address) data.address = Address.parse(data.address);
     return data;
 };
 
@@ -779,6 +787,8 @@ const tonTransferActionSchemaResponseTransformer = (data: any) => {
 
 const subscriptionActionSchemaResponseTransformer = (data: any) => {
     data.amount = BigInt(data.amount.toString());
+    
+    if (data.subscription) data.subscription = Address.parse(data.subscription);
     return data;
 };
 
@@ -791,6 +801,8 @@ const auctionBidActionSchemaResponseTransformer = (data: any) => {
 
 const nftItemSchemaResponseTransformer = (data: any) => {
     data.index = BigInt(data.index.toString());
+    
+    if (data.address) data.address = Address.parse(data.address);
     return data;
 };
 
@@ -924,6 +936,10 @@ const subscriptionSchemaResponseTransformer = (data: any) => {
     data.last_payment_time = BigInt(data.last_payment_time.toString());
     data.last_request_time = BigInt(data.last_request_time.toString());
     data.subscription_id = BigInt(data.subscription_id.toString());
+    
+    if (data.address) data.address = Address.parse(data.address);
+    if (data.wallet_address) data.wallet_address = Address.parse(data.wallet_address);
+    if (data.beneficiary_address) data.beneficiary_address = Address.parse(data.beneficiary_address);
     return data;
 };
 
@@ -972,6 +988,8 @@ const multisigOrderSchemaResponseTransformer = (data: any) => {
     data.expiration_date = BigInt(data.expiration_date.toString());
     data.risk = riskSchemaResponseTransformer(data.risk);
     data.creation_date = BigInt(data.creation_date.toString());
+    
+    if (data.address) data.address = Address.parse(data.address);
     return data;
 };
 
@@ -1051,6 +1069,8 @@ const auctionSchemaResponseTransformer = (data: any) => {
     data.price = BigInt(data.price.toString());
     data.bids = BigInt(data.bids.toString());
     data.date = BigInt(data.date.toString());
+    
+    if (data.owner) data.owner = Address.parse(data.owner);
     return data;
 };
 
@@ -1070,6 +1090,8 @@ const nftCollectionsSchemaResponseTransformer = (data: any) => {
 
 const nftCollectionSchemaResponseTransformer = (data: any) => {
     data.next_item_index = BigInt(data.next_item_index.toString());
+    
+    if (data.address) data.address = Address.parse(data.address);
     
     if (data.raw_collection_content) data.raw_collection_content = Cell.fromHex(data.raw_collection_content);
     return data;
@@ -1257,6 +1279,8 @@ const storageProviderSchemaResponseTransformer = (data: any) => {
     data.max_span = BigInt(data.max_span.toString());
     data.minimal_file_size = BigInt(data.minimal_file_size.toString());
     data.maximal_file_size = BigInt(data.maximal_file_size.toString());
+    
+    if (data.address) data.address = Address.parse(data.address);
     return data;
 };
 
@@ -1285,6 +1309,9 @@ export const getMarketsRatesResponseTransformer = async (
 
 const signRawParamsSchemaResponseTransformer = (data: any) => {
     data.valid_until = new Date(Number(data.valid_until) * 1000);
+    
+    if (data.relay_address) data.relay_address = Address.parse(data.relay_address);
+    if (data.from) data.from = Address.parse(data.from);
     return data;
 };
 
