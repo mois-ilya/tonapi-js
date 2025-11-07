@@ -2,6 +2,14 @@
 
 import { Address, Cell, TupleItem } from '@ton/core';
 
+export type ClientOptions = {
+    baseUrl:
+        | 'https://tonapi.io'
+        | 'https://testnet.tonapi.io'
+        | 'http://localhost:8081'
+        | (string & {});
+};
+
 export type _Error = {
     error: string;
 };
@@ -846,6 +854,7 @@ export type NftItem = {
     dns?: string;
     /**
      * please use trust field
+     *
      * @deprecated
      */
     approved_by: NftApprovedBy;
@@ -1694,7 +1703,7 @@ export type EcIdParameter = number;
 
 export type PublicKeyParameter = string;
 
-export type I18N = string;
+export type I18n = string;
 
 export type LimitQuery = number;
 
@@ -5829,11 +5838,3 @@ export type EmulateMessageToAccountEventResponses = {
 
 export type EmulateMessageToAccountEventResponse =
     EmulateMessageToAccountEventResponses[keyof EmulateMessageToAccountEventResponses];
-
-export type ClientOptions = {
-    baseUrl:
-        | 'https://tonapi.io'
-        | 'https://testnet.tonapi.io'
-        | 'http://localhost:8081'
-        | (string & {});
-};

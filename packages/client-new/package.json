@@ -31,7 +31,7 @@
     "clean": "rimraf ./dist"
   },
   "devDependencies": {
-    "@hey-api/openapi-ts": "^0.73.0",
+    "@hey-api/openapi-ts": "^0.87.1",
     "@types/node": "^20.14.2",
     "rimraf": "^5.0.7",
     "tsx": "^4.16.2",
