@@ -248,8 +248,9 @@ function analyzeSpec(spec: any): Map<string, string> {
 
 /**
  * Transform generated types.gen.ts file
+ * Uses cellFields information to replace Cell field types
  */
-function transformTypes(content: string): string {
+function transformTypes(content: string, cellFields: CellFieldInfo[]): string {
   let transformed = content;
   let replacementCount = 0;
 
@@ -276,13 +277,19 @@ function transformTypes(content: string): string {
     console.log(`✓ Replaced ${addressMatches.length} address fields: string → Address`);
   }
 
-  // 2. Replace boc and cell fields (Cell data)
-  const bocPattern = /(\s+(?:boc|cell)\??:\s*)string(;)/g;
-  const bocMatches = transformed.match(bocPattern);
-  if (bocMatches) {
-    transformed = transformed.replace(bocPattern, '$1Cell$2');
-    replacementCount += bocMatches.length;
-    console.log(`✓ Replaced ${bocMatches.length} boc/cell fields: string → Cell`);
+  // 2. Replace Cell fields using analyzed schema information
+  // This handles boc, cell, code, data, and any other fields with format: cell
+  const cellFieldNames = new Set(cellFields.map(f => f.fieldName));
+  for (const fieldName of cellFieldNames) {
+    const pattern = new RegExp(`(\\s+${fieldName}\\??:\\s*)string(;)`, 'g');
+    const matches = transformed.match(pattern);
+    if (matches) {
+      transformed = transformed.replace(pattern, '$1Cell$2');
+      replacementCount += matches.length;
+    }
+  }
+  if (cellFieldNames.size > 0) {
+    console.log(`✓ Replaced ${cellFieldNames.size} Cell fields: string → Cell (${Array.from(cellFieldNames).join(', ')})`);
   }
 
   // 3. Replace fields ending with _address: string
@@ -612,7 +619,7 @@ async function main() {
   // Transform types
   console.log('\nTransforming types.gen.ts...');
   let typesContent = fs.readFileSync(TYPES_FILE, 'utf-8');
-  typesContent = transformTypes(typesContent);
+  typesContent = transformTypes(typesContent, cellFields);
   typesContent = transformTimestampTypes(typesContent);
   fs.writeFileSync(TYPES_FILE, typesContent, 'utf-8');
 

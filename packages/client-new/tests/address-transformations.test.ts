@@ -34,6 +34,8 @@ describe('Address transformations', () => {
     expect(result).toBeDefined();
     expect(result.data).toBeDefined();
 
+    if (!result.data) throw new Error('result.data is undefined');
+
     // Verify address field is Address instance
     expect(Address.isAddress(result.data.address)).toBe(true);
     expect(result.data.address.toRawString()).toBe('0:009d03ddede8c2620a72f999d03d5888102250a214bf574a29ff64df80162168');

@@ -23,6 +23,9 @@ describe('BigInt transformations', () => {
 
     expect(result).toBeDefined();
     expect(result.data).toBeDefined();
+
+    if (!result.data) throw new Error('result.data is undefined');
+
     expect(result.data.accounts).toHaveLength(2);
 
     // Verify very large BigInt (exceeds Number.MAX_SAFE_INTEGER)
@@ -45,6 +48,8 @@ describe('BigInt transformations', () => {
 
     expect(result).toBeDefined();
     expect(result.data).toBeDefined();
+
+    if (!result.data) throw new Error('result.data is undefined');
 
     // total_supply comes as string in JSON, should be converted to BigInt
     expect(typeof result.data.total_supply).toBe('bigint');

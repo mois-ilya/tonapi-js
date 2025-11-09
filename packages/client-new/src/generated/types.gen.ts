@@ -141,7 +141,7 @@ export type Message = {
     /**
      * hex-encoded BoC with raw message body
      */
-    raw_body?: string;
+    raw_body?: Cell;
     decoded_op_name?: string;
     decoded_body?: unknown;
 };
@@ -221,7 +221,7 @@ export type Transaction = {
     /**
      * hex encoded boc with raw transaction
      */
-    raw: string;
+    raw: Cell;
 };
 
 export type Transactions = {
@@ -388,8 +388,8 @@ export type BlockchainRawAccount = {
     extra_balance?: {
         [key: string]: string;
     };
-    code?: string;
-    data?: string;
+    code?: Cell;
+    data?: Cell;
     last_transaction_lt: bigint;
     last_transaction_hash?: string;
     frozen_hash?: string;
@@ -452,11 +452,11 @@ export type SignRawMessage = {
     /**
      * Raw one-cell BoC encoded in hex.
      */
-    payload?: string;
+    payload?: Cell;
     /**
      * Raw once-cell BoC encoded in hex.
      */
-    stateInit?: string;
+    stateInit?: Cell;
 };
 
 export type SignRawParams = {
@@ -483,7 +483,7 @@ export type MethodExecutionResult = {
 export type TvmStackRecord = {
     type: 'cell' | 'num' | 'nan' | 'null' | 'tuple';
     cell?: Cell;
-    slice?: string;
+    slice?: Cell;
     num?: string;
     tuple?: Array<TvmStackRecord>;
 };
@@ -764,7 +764,7 @@ export type BlockchainConfig = {
     /**
      * config boc in hex format
      */
-    raw: string;
+    raw: Cell;
 };
 
 export type DomainNames = {
@@ -1005,7 +1005,7 @@ export type SmartContractAction = {
      */
     ton_attached: bigint;
     operation: string;
-    payload?: string;
+    payload?: Cell;
     refund?: Refund;
 };
 
@@ -1048,7 +1048,7 @@ export type NftItemTransferAction = {
     /**
      * raw hex encoded payload
      */
-    payload?: string;
+    payload?: Cell;
     refund?: Refund;
 };
 
@@ -1297,7 +1297,7 @@ export type NftCollection = {
     address: Address;
     next_item_index: bigint;
     owner?: AccountAddress;
-    raw_collection_content: string;
+    raw_collection_content: Cell;
     metadata?: {
         [key: string]: unknown;
     };
@@ -1584,7 +1584,7 @@ export type EncryptedComment = {
 };
 
 export type BlockchainAccountInspect = {
-    code: string;
+    code: Cell;
     code_hash: string;
     methods: Array<Method>;
     compiler: 'func' | 'fift' | 'tact';
@@ -1880,7 +1880,7 @@ export type TonConnectProof = {
             value: string;
         };
         signature: string;
-        payload: string;
+        payload: Cell;
         state_init?: string;
     };
 };
@@ -4692,7 +4692,7 @@ export type GetTonConnectPayloadResponses = {
      * payload
      */
     200: {
-        payload: string;
+        payload: Cell;
     };
 };
 
@@ -5062,7 +5062,7 @@ export type GetRawBlockchainBlockResponses = {
      */
     200: {
         id: BlockRaw;
-        data: string;
+        data: Cell;
     };
 };
 
@@ -5102,7 +5102,7 @@ export type GetRawBlockchainBlockStateResponses = {
         id: BlockRaw;
         root_hash: string;
         file_hash: string;
-        data: string;
+        data: Cell;
     };
 };
 
@@ -5313,7 +5313,7 @@ export type GetAllRawShardsInfoResponses = {
     200: {
         id: BlockRaw;
         proof: string;
-        data: string;
+        data: Cell;
     };
 };
 
