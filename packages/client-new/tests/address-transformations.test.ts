@@ -45,21 +45,33 @@ describe('Address transformations', () => {
   });
 
   test('Address serialization in request parameters', async () => {
-    const fetchSpy = mockFetch({ balance: 1000n });
+    const fetchSpy = mockFetch({
+      address: '0:009d03ddede8c2620a72f999d03d5888102250a214bf574a29ff64df80162168',
+      balance: 1000n,
+      status: 'active'
+    });
 
-    const accountAddress = Address.parse('EQCae11h9N5znylEPRjmuLYGvIwnxkcCw4zVW4BJjVASi5eL');
+    // Use valid TON address (from old client tests)
+    const accountAddress = Address.parse('UQCae11h9N5znylEPRjmuLYGvIwnxkcCw4zVW4BJjVASi5eL');
 
     await getAccount({
       path: { account_id: accountAddress.toRawString() }
     });
 
-    // Verify fetch was called with raw string format
+    // Verify fetch was called
     expect(fetchSpy).toHaveBeenCalled();
-    const callArgs = fetchSpy.mock.calls[0];
-    const url = callArgs[0] as string;
 
-    // URL should contain raw format address
-    expect(url).toContain('UQCae11h9N5znylEPRjmuLYGvIwnxkcCw4zVW4BJjVASi5eL');
+    // Get the Request object (fetch is called with Request, not URL string)
+    const callArgs = fetchSpy.mock.calls[0];
+    const request = callArgs[0] as Request;
+
+    // URL should contain the account address in raw format (not user-friendly)
+    expect(request.url).toContain('/v2/accounts/');
+
+    // Address.toRawString() returns raw format: "0:hex..."
+    // So URL should contain the raw format, not user-friendly format
+    const rawAddress = accountAddress.toRawString();
+    expect(request.url).toContain(encodeURIComponent(rawAddress));
   });
 
   test('Address fields with _address suffix', async () => {

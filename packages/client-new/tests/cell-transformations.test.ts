@@ -41,22 +41,33 @@ describe('Cell transformations', () => {
     expect(result.data.balance).toBe(10000000n);
   });
 
-  test('Cell base64 in tuple item response', async () => {
-    mockFetch(execGetMethodForBlockchainAccount);
+  test('Multiple Cell fields in response', async () => {
+    // Use real Cell hex from getBlockchainRawAccount mock
+    mockFetch(getBlockchainRawAccount);
 
     const addressString = 'EQDW6q4sRqQwNCmW4qwUpeFSU1Xhd6l3xwJ6jjknBPzxKNtT';
     const addressObject = Address.parse(addressString);
 
-    // Note: execGetMethodForBlockchainAccount has different structure
-    // This test would need proper method execution endpoint
-    // For now, testing basic structure
     const result = await getBlockchainRawAccountSDK({
       path: { account_id: addressObject.toRawString() }
     });
 
     expect(result).toBeDefined();
-    // Note: TupleItem transformation needs more complex logic
-    // This test verifies basic response structure
+    expect(result.data).toBeDefined();
+
+    if (!result.data) throw new Error('result.data is undefined');
+
+    // Both code and data should be Cell
+    expect(result.data.code).toBeInstanceOf(Cell);
+    expect(result.data.data).toBeInstanceOf(Cell);
+
+    // Verify we can call Cell methods
+    if (result.data.code) {
+      expect(typeof result.data.code.toBoc).toBe('function');
+    }
+    if (result.data.data) {
+      expect(typeof result.data.data.toBoc).toBe('function');
+    }
   });
 
   test('Cell serialization in request body', async () => {
