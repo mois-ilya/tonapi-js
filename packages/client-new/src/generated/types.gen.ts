@@ -32,7 +32,7 @@ export type BlockCurrencyCollection = {
     grams: bigint;
     other: Array<{
         id: bigint;
-        value: string;
+        value: bigint;
     }>;
 };
 
@@ -135,7 +135,7 @@ export type Message = {
     source?: AccountAddress;
     import_fee: bigint;
     created_at: Date;
-    op_code?: string;
+    op_code?: bigint;
     init?: StateInit;
     hash: string;
     /**
@@ -317,7 +317,7 @@ export type ValidatorsSet = {
     utime_until: number;
     total: number;
     main: number;
-    total_weight?: string;
+    total_weight?: bigint;
     list: Array<{
         public_key: string;
         weight: bigint;
@@ -448,7 +448,7 @@ export type SignRawMessage = {
     /**
      * Number of nanocoins to send. Decimal string.
      */
-    amount: string;
+    amount: bigint;
     /**
      * Raw one-cell BoC encoded in hex.
      */
@@ -464,7 +464,7 @@ export type SignRawParams = {
     /**
      * Commission for the transaction. In nanocoins.
      */
-    commission: string;
+    commission: bigint;
     from: string;
     valid_until: Date;
     messages: Array<SignRawMessage>;
@@ -533,7 +533,7 @@ export type BlockchainConfig = {
     7?: {
         currencies: Array<{
             currency_id: bigint;
-            amount: string;
+            amount: bigint;
         }>;
     };
     /**
@@ -797,13 +797,13 @@ export type JettonPreview = {
 };
 
 export type JettonBalance = {
-    balance: string;
+    balance: bigint;
     price?: TokenRates;
     wallet_address: AccountAddress;
     jetton: JettonPreview;
     extensions?: Array<string>;
     lock?: {
-        amount: string;
+        amount: bigint;
         till: bigint;
     };
 };
@@ -813,7 +813,7 @@ export type JettonsBalances = {
 };
 
 export type Price = {
-    value: string;
+    value: bigint;
     token_name: string;
 };
 
@@ -991,7 +991,7 @@ export type ExtraCurrencyTransferAction = {
     /**
      * amount in quanta of tokens
      */
-    amount: string;
+    amount: bigint;
     comment?: string;
     encrypted_comment?: EncryptedComment;
     currency: EcPreview;
@@ -1020,7 +1020,7 @@ export type InscriptionMintAction = {
     /**
      * amount in minimal particles
      */
-    amount: string;
+    amount: bigint;
     type: 'ton20' | 'gram20';
     ticker: string;
     decimals: number;
@@ -1032,7 +1032,7 @@ export type InscriptionTransferAction = {
     /**
      * amount in minimal particles
      */
-    amount: string;
+    amount: bigint;
     comment?: string;
     type: 'ton20' | 'gram20';
     ticker: string;
@@ -1060,7 +1060,7 @@ export type JettonTransferAction = {
     /**
      * amount in quanta of tokens
      */
-    amount: string;
+    amount: bigint;
     comment?: string;
     encrypted_comment?: EncryptedComment;
     refund?: Refund;
@@ -1073,7 +1073,7 @@ export type JettonBurnAction = {
     /**
      * amount in quanta of tokens
      */
-    amount: string;
+    amount: bigint;
     jetton: JettonPreview;
 };
 
@@ -1083,7 +1083,7 @@ export type JettonMintAction = {
     /**
      * amount in quanta of tokens
      */
-    amount: string;
+    amount: bigint;
     jetton: JettonPreview;
 };
 
@@ -1156,8 +1156,8 @@ export type ElectionsDepositStakeAction = {
 
 export type JettonSwapAction = {
     dex: 'stonfi' | 'dedust' | 'megatonfi';
-    amount_in: string;
-    amount_out: string;
+    amount_in: bigint;
+    amount_out: bigint;
     ton_in?: bigint;
     ton_out?: bigint;
     user_wallet: AccountAddress;
@@ -1184,7 +1184,7 @@ export type ActionSimplePreview = {
      * a link to an image for this particular action.
      */
     action_image?: string;
-    value?: string;
+    value?: bigint;
     /**
      * a link to an image that depicts this action's asset.
      */
@@ -1336,7 +1336,7 @@ export type Risk = {
 };
 
 export type JettonQuantity = {
-    quantity: string;
+    quantity: bigint;
     wallet_address: AccountAddress;
     jetton: JettonPreview;
 };
@@ -1374,7 +1374,7 @@ export type DecodedRawMessage = {
     message: {
         boc: Cell;
         decoded_op_name?: string;
-        op_code?: string;
+        op_code?: bigint;
         decoded_body?: unknown;
     };
     mode: number;
@@ -1419,7 +1419,7 @@ export type InscriptionBalances = {
 export type InscriptionBalance = {
     type: 'ton20' | 'gram20';
     ticker: string;
-    balance: string;
+    balance: bigint;
     decimals: number;
 };
 
@@ -1429,7 +1429,7 @@ export type Jettons = {
 
 export type JettonInfo = {
     mintable: boolean;
-    total_supply: string;
+    total_supply: bigint;
     admin?: AccountAddress;
     metadata: JettonMetadata;
     preview: string;
@@ -1444,7 +1444,7 @@ export type JettonHolders = {
         /**
          * balance in the smallest jetton's units
          */
-        balance: string;
+        balance: bigint;
     }>;
     /**
      * total number of holders
@@ -1615,7 +1615,7 @@ export type MarketTonRates = {
 };
 
 export type ExtraCurrency = {
-    amount: string;
+    amount: bigint;
     preview: EcPreview;
 };
 
@@ -1877,7 +1877,7 @@ export type TonConnectProof = {
         timestamp: Date;
         domain: {
             length_bytes?: number;
-            value: string;
+            value: bigint;
         };
         signature: string;
         payload: Cell;
@@ -4093,7 +4093,7 @@ export type GetInscriptionOpTemplateData = {
         destination?: string;
         comment?: string;
         operation: 'transfer';
-        amount: string;
+        amount: bigint;
         ticker: string;
         who: string;
     };

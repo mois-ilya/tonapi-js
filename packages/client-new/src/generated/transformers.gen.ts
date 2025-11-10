@@ -209,6 +209,8 @@ const messageSchemaResponseTransformer = (data: any) => {
     data.created_at = new Date(Number(data.created_at) * 1000);
     
     if (data.raw_body) data.raw_body = Cell.fromHex(data.raw_body);
+    
+    if (data.op_code) data.op_code = BigInt(data.op_code);
     return data;
 };
 
@@ -990,6 +992,8 @@ const multisigOrderSchemaResponseTransformer = (data: any) => {
     data.creation_date = BigInt(data.creation_date.toString());
     
     if (data.address) data.address = Address.parse(data.address);
+    if (Array.isArray(data.signers)) data.signers = data.signers.map((addr: string) => Address.parse(addr));
+    if (Array.isArray(data.signed_by)) data.signed_by = data.signed_by.map((addr: string) => Address.parse(addr));
     return data;
 };
 
@@ -1312,6 +1316,8 @@ const signRawParamsSchemaResponseTransformer = (data: any) => {
     
     if (data.relay_address) data.relay_address = Address.parse(data.relay_address);
     if (data.from) data.from = Address.parse(data.from);
+    
+    if (data.commission) data.commission = BigInt(data.commission);
     return data;
 };
 

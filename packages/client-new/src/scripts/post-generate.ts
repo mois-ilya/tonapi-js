@@ -24,11 +24,79 @@ interface CellFieldInfo {
   schemaName: string;  // e.g., "BlockchainRawAccount"
   fieldName: string;   // e.g., "code"
   format: 'hex' | 'base64';  // cell format
+  isArray?: boolean;   // true if it's an array field
 }
 
 interface AddressFieldInfo {
   schemaName: string;  // e.g., "Account"
   fieldName: string;   // e.g., "address"
+  isArray?: boolean;   // true if it's an array field
+}
+
+interface StringBigIntFieldInfo {
+  schemaName: string;  // e.g., "JettonInfo"
+  fieldName: string;   // e.g., "total_supply"
+  isArray?: boolean;   // true if it's an array field
+}
+
+/**
+ * Parse OpenAPI spec and find all String BigInt fields (type: string + x-js-format: bigint)
+ */
+function analyzeStringBigIntFields(spec: any): StringBigIntFieldInfo[] {
+  const stringBigIntFields: StringBigIntFieldInfo[] = [];
+
+  function processSchema(schema: any, schemaName?: string, parentSchemaName?: string) {
+    if (!schema || typeof schema !== 'object') return;
+
+    // Check if this is a String BigInt field
+    if (schema.type === 'string' && schema['x-js-format'] === 'bigint') {
+      const parts = schemaName?.split('.');
+      if (parts && parts.length === 2 && parentSchemaName) {
+        const fieldName = parts[1];
+        const isArray = fieldName.includes('[]');
+        const cleanFieldName = isArray ? fieldName.replace('[]', '') : fieldName;
+
+        stringBigIntFields.push({
+          schemaName: parentSchemaName,
+          fieldName: cleanFieldName,
+          isArray
+        });
+      }
+    }
+
+    // Process properties
+    if (schema.properties) {
+      for (const [propName, propSchema] of Object.entries(schema.properties)) {
+        processSchema(propSchema, `${schemaName}.${propName}`, parentSchemaName || schemaName);
+      }
+    }
+
+    // Process array items
+    if (schema.items) {
+      processSchema(schema.items, schemaName ? `${schemaName}[]` : undefined, parentSchemaName);
+    }
+
+    // Process allOf, anyOf, oneOf
+    ['allOf', 'anyOf', 'oneOf'].forEach((key) => {
+      if (Array.isArray(schema[key])) {
+        schema[key].forEach((item: any) => processSchema(item, schemaName, parentSchemaName));
+      }
+    });
+
+    // Process additionalProperties
+    if (schema.additionalProperties && typeof schema.additionalProperties === 'object') {
+      processSchema(schema.additionalProperties, schemaName, parentSchemaName);
+    }
+  }
+
+  // Process all schemas
+  if (spec.components?.schemas) {
+    for (const [schemaName, schema] of Object.entries(spec.components.schemas)) {
+      processSchema(schema, schemaName, schemaName);
+    }
+  }
+
+  return stringBigIntFields;
 }
 
 /**
@@ -44,13 +112,15 @@ function analyzeAddressFields(spec: any): AddressFieldInfo[] {
     if (schema.type === 'string' && schema.format === 'address') {
       const parts = schemaName?.split('.');
       if (parts && parts.length === 2 && parentSchemaName) {
-        // Skip array items (they have [] suffix)
-        if (!parts[1].includes('[')) {
-          addressFields.push({
-            schemaName: parentSchemaName,
-            fieldName: parts[1]
-          });
-        }
+        const fieldName = parts[1];
+        const isArray = fieldName.includes('[]');
+        const cleanFieldName = isArray ? fieldName.replace('[]', '') : fieldName;
+
+        addressFields.push({
+          schemaName: parentSchemaName,
+          fieldName: cleanFieldName,
+          isArray
+        });
       }
     }
 
@@ -103,26 +173,30 @@ function analyzeCellFields(spec: any): CellFieldInfo[] {
       if (schema.format === 'cell') {
         const parts = schemaName?.split('.');
         if (parts && parts.length === 2 && parentSchemaName) {
-          // Skip array items (they have [] suffix)
-          if (!parts[1].includes('[')) {
-            cellFields.push({
-              schemaName: parentSchemaName,
-              fieldName: parts[1],
-              format: 'hex'
-            });
-          }
+          const fieldName = parts[1];
+          const isArray = fieldName.includes('[]');
+          const cleanFieldName = isArray ? fieldName.replace('[]', '') : fieldName;
+
+          cellFields.push({
+            schemaName: parentSchemaName,
+            fieldName: cleanFieldName,
+            format: 'hex',
+            isArray
+          });
         }
       } else if (schema.format === 'cell-base64') {
         const parts = schemaName?.split('.');
         if (parts && parts.length === 2 && parentSchemaName) {
-          // Skip array items (they have [] suffix)
-          if (!parts[1].includes('[')) {
-            cellFields.push({
-              schemaName: parentSchemaName,
-              fieldName: parts[1],
-              format: 'base64'
-            });
-          }
+          const fieldName = parts[1];
+          const isArray = fieldName.includes('[]');
+          const cleanFieldName = isArray ? fieldName.replace('[]', '') : fieldName;
+
+          cellFields.push({
+            schemaName: parentSchemaName,
+            fieldName: cleanFieldName,
+            format: 'base64',
+            isArray
+          });
         }
       }
     }
@@ -248,9 +322,9 @@ function analyzeSpec(spec: any): Map<string, string> {
 
 /**
  * Transform generated types.gen.ts file
- * Uses cellFields information to replace Cell field types
+ * Uses cellFields and stringBigIntFields information to replace types
  */
-function transformTypes(content: string, cellFields: CellFieldInfo[]): string {
+function transformTypes(content: string, cellFields: CellFieldInfo[], stringBigIntFields: StringBigIntFieldInfo[]): string {
   let transformed = content;
   let replacementCount = 0;
 
@@ -292,7 +366,21 @@ function transformTypes(content: string, cellFields: CellFieldInfo[]): string {
     console.log(`✓ Replaced ${cellFieldNames.size} Cell fields: string → Cell (${Array.from(cellFieldNames).join(', ')})`);
   }
 
-  // 3. Replace fields ending with _address: string
+  // 3. Replace String BigInt fields: string → bigint
+  const stringBigIntFieldNames = new Set(stringBigIntFields.map(f => f.fieldName));
+  for (const fieldName of stringBigIntFieldNames) {
+    const pattern = new RegExp(`(\\s+${fieldName}\\??:\\s*)string(;)`, 'g');
+    const matches = transformed.match(pattern);
+    if (matches) {
+      transformed = transformed.replace(pattern, '$1bigint$2');
+      replacementCount += matches.length;
+    }
+  }
+  if (stringBigIntFieldNames.size > 0) {
+    console.log(`✓ Replaced ${stringBigIntFieldNames.size} String BigInt fields: string → bigint (${Array.from(stringBigIntFieldNames).join(', ')})`);
+  }
+
+  // 4. Replace fields ending with _address: string
   const addressSuffixPattern = /(\s+\w*_address\??:\s*)string(;)/g;
   const addressSuffixMatches = transformed.match(addressSuffixPattern);
   if (addressSuffixMatches) {
@@ -397,6 +485,62 @@ function transformTimestampTypes(content: string): string {
 }
 
 /**
+ * Add String BigInt transformations to transformers.gen.ts
+ * For each String BigInt field, add lines like:
+ *   if (data.total_supply) data.total_supply = BigInt(data.total_supply);
+ */
+function addStringBigIntTransformations(content: string, stringBigIntFields: StringBigIntFieldInfo[]): string {
+  let transformed = content;
+  let additionsCount = 0;
+
+  // Group String BigInt fields by schema name
+  const fieldsBySchema = new Map<string, StringBigIntFieldInfo[]>();
+  for (const field of stringBigIntFields) {
+    const existing = fieldsBySchema.get(field.schemaName) || [];
+    existing.push(field);
+    fieldsBySchema.set(field.schemaName, existing);
+  }
+
+  // For each schema, find its transformer function and add BigInt conversions
+  for (const [schemaName, fields] of fieldsBySchema.entries()) {
+    // Convert PascalCase to camelCase for function name
+    const functionName = schemaName.charAt(0).toLowerCase() + schemaName.slice(1) + 'SchemaResponseTransformer';
+
+    // Find the transformer function
+    const functionPattern = new RegExp(
+      `(const ${functionName} = \\(data: any\\) => \\{[^}]*)(return data;\\s*\\};)`,
+      's'
+    );
+
+    const match = transformed.match(functionPattern);
+    if (match) {
+      const beforeReturn = match[1];
+      const returnStatement = match[2];
+
+      // Generate BigInt conversion lines
+      const bigintConversions = fields.map(field => {
+        if (field.isArray) {
+          return `    if (Array.isArray(data.${field.fieldName})) data.${field.fieldName} = data.${field.fieldName}.map((v: string) => BigInt(v));`;
+        } else {
+          return `    if (data.${field.fieldName}) data.${field.fieldName} = BigInt(data.${field.fieldName});`;
+        }
+      }).join('\n');
+
+      const newFunction = `${beforeReturn}\n${bigintConversions}\n    ${returnStatement}`;
+
+      transformed = transformed.replace(functionPattern, newFunction);
+      additionsCount += fields.length;
+    }
+  }
+
+  if (additionsCount > 0) {
+    console.log(`✓ Added ${additionsCount} String BigInt transformations to transformers.gen.ts`);
+  }
+
+  return transformed;
+}
+
+/**
  * Add Address transformations to transformers.gen.ts
  * For each Address field, add lines like:
  *   if (data.address) data.address = Address.parse(data.address);
@@ -452,7 +596,11 @@ function addAddressTransformations(content: string, addressFields: AddressFieldI
 
       // Generate Address conversion lines
       const addressConversions = fields.map(field => {
-        return `    if (data.${field.fieldName}) data.${field.fieldName} = Address.parse(data.${field.fieldName});`;
+        if (field.isArray) {
+          return `    if (Array.isArray(data.${field.fieldName})) data.${field.fieldName} = data.${field.fieldName}.map((addr: string) => Address.parse(addr));`;
+        } else {
+          return `    if (data.${field.fieldName}) data.${field.fieldName} = Address.parse(data.${field.fieldName});`;
+        }
       }).join('\n');
 
       const newFunction = `${beforeReturn}\n${addressConversions}\n    ${returnStatement}`;
@@ -517,7 +665,11 @@ function addCellTransformations(content: string, cellFields: CellFieldInfo[]): s
       // Generate Cell conversion lines
       const cellConversions = fields.map(field => {
         const method = field.format === 'hex' ? 'fromHex' : 'fromBase64';
-        return `    if (data.${field.fieldName}) data.${field.fieldName} = Cell.${method}(data.${field.fieldName});`;
+        if (field.isArray) {
+          return `    if (Array.isArray(data.${field.fieldName})) data.${field.fieldName} = data.${field.fieldName}.map((c: string) => Cell.${method}(c));`;
+        } else {
+          return `    if (data.${field.fieldName}) data.${field.fieldName} = Cell.${method}(data.${field.fieldName});`;
+        }
       }).join('\n');
 
       const newFunction = `${beforeReturn}\n${cellConversions}\n    ${returnStatement}`;
@@ -610,20 +762,22 @@ async function main() {
   // Analyze spec (for debugging)
   analyzeSpec(spec);
 
-  // Analyze Address and Cell fields
+  // Analyze Address, Cell, and String BigInt fields
   const addressFields = analyzeAddressFields(spec);
   const cellFields = analyzeCellFields(spec);
+  const stringBigIntFields = analyzeStringBigIntFields(spec);
   console.log(`\n✓ Found ${addressFields.length} Address fields in API spec`);
   console.log(`✓ Found ${cellFields.length} Cell fields in API spec`);
+  console.log(`✓ Found ${stringBigIntFields.length} String BigInt fields in API spec`);
 
   // Transform types
   console.log('\nTransforming types.gen.ts...');
   let typesContent = fs.readFileSync(TYPES_FILE, 'utf-8');
-  typesContent = transformTypes(typesContent, cellFields);
+  typesContent = transformTypes(typesContent, cellFields, stringBigIntFields);
   typesContent = transformTimestampTypes(typesContent);
   fs.writeFileSync(TYPES_FILE, typesContent, 'utf-8');
 
-  // Transform transformers (add Date, Address, and Cell conversions)
+  // Transform transformers (add Date, Address, Cell, and String BigInt conversions)
   if (fs.existsSync(TRANSFORMERS_FILE)) {
     console.log('\nTransforming transformers.gen.ts...');
     let transformersContent = fs.readFileSync(TRANSFORMERS_FILE, 'utf-8');
@@ -636,6 +790,9 @@ async function main() {
 
     // Add Cell conversions
     transformersContent = addCellTransformations(transformersContent, cellFields);
+
+    // Add String BigInt conversions
+    transformersContent = addStringBigIntTransformations(transformersContent, stringBigIntFields);
 
     fs.writeFileSync(TRANSFORMERS_FILE, transformersContent, 'utf-8');
   } else {
